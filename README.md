@@ -8,6 +8,7 @@ hosting and SQLite is the go-to for now.
 If you're reading this, hello VDW o/
 
 # venv
-if you are planning to run/use/clone this, make sure you
-have Python 3.9.1
+NEVER MIND the venv is in here
+
+Should be Python version 3.9.1
 
