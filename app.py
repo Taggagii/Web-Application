@@ -3,9 +3,27 @@ from flask_sqlalchemy import *
 import os
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 #setting up database
+db = SQLAlchemy(app)
+db.drop_all()
+
+
+class WeatherLocation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city = db.Column(db.String, nullable=False)
+    country = db.Column(db.String, nullable=False)
+    #lat = db.Column(db.Decimal, default=None)
+    #lon = db.Column(db.Decimal, default=None)
+    last_call = db.Column(db.DateTime, default=datetime.utcnow())
+    temperature = db.Column(db.Integer, nullable=False)
+    precipitiation = db.Column(db.Integer, nullable=False)
+    humidity = db.Column(db.Integer, nullable=False)
+    wind = db.Column(db.Integer, nullable=False)
+    #warnings = db.Column(db.String, default=None)
 
 content = ""
 
@@ -16,6 +34,8 @@ def getTemperature(location):
 
     temp = soup.find(class_="BNeawe iBp4i AP7Wnd")
     correctedLocation = soup.find(class_="BNeawe tAd8D AP7Wnd")
+
+    location_text = correctedLocation.text.split(',')
 
     if temp:
         return "The temp in " + correctedLocation.text + " is " + temp.text

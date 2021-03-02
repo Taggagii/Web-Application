@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JDGroup</title>
+    {% block title %}
+    {% endblock %}
 </head>
 <body>
-    <ul></ul>
+    {% block navbar %}
+    {% endblock %}
+    {% block body %}
+    {% endblock %}
 </body>
 </html>
