@@ -20,9 +20,10 @@ class WeatherLocation(db.Model):
     #lon = db.Column(db.Decimal, default=None)
     last_call = db.Column(db.DateTime, default=datetime.utcnow())
     temperature = db.Column(db.Integer, nullable=False)
-    precipitiation = db.Column(db.Integer, nullable=False)
-    humidity = db.Column(db.Integer, nullable=False)
-    wind = db.Column(db.Integer, nullable=False)
+    #precipitation = db.Column(db.Integer, nullable=False)
+    #humidity = db.Column(db.Integer, nullable=False)
+    #wind = db.Column(db.Integer, nullable=False)
+    unit = db.Column(db.String, nullable=False)
     #warnings = db.Column(db.String, default=None)
 
 content = ""
@@ -32,13 +33,17 @@ def getTemperature(location):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
-    temp = soup.find(class_="BNeawe iBp4i AP7Wnd")
-    correctedLocation = soup.find(class_="BNeawe tAd8D AP7Wnd")
+    temp = [i.strip() for i in soup.find(class_="BNeawe iBp4i AP7Wnd").split('°')]
+    corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
 
-    location_text = correctedLocation.text.split(',')
+    location_text = [i.strip() for i in corrected_location.text.split(',')]
+    new_weather_entry = WeatherLocation(city=location_text[0],
+                                        country=location_text[1],
+                                        temperature=temp[0],
+                                        unit=temp[1])
 
     if temp:
-        return "The temp in " + correctedLocation.text + " is " + temp.text
+        return "The temp in " + corrected_location.text + " is " + temp.text
     return 'Sorry! We couldn\'t resolve the location: "' + location + '"'
 
 
@@ -52,7 +57,6 @@ def testing():
     location = request.form['valuesInput']
     content = getTemperature(location) #get the value
     return redirect('/')
-
 
 @app.context_processor
 def override_url_for():
