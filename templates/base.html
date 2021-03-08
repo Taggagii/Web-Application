@@ -9,13 +9,23 @@
     {% block title %}{% endblock %}
     <!-- Jinja blocks allow other pages to "build" on this boilerplate code much like a giant HTML variable, allowing
     us to change something on just this page and apply it to any other page on the site -->
+    <title>JDGroup - {{name}}</title>
 </head>
 <body>
 
 <nav>
     <ul class="navbar">
-        {% block navbar %}
-        {% endblock %}
+
+        {% for name in names %}
+        <li>
+        {% if name != currentPage %}
+            <a href = "{{ names[name] }}">{{ name }}</a>
+        {% else %}
+            <a class = "currentNav" href = "{{ names[name] }}">{{ name }}</a>
+        {% endif %}
+        </li>
+        {% endfor %}
+
     </ul>
 </nav>
 

@@ -13,6 +13,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 db.drop_all()
 
+currentPage = "Home"
+names = {"Home": "/",
+         "About": "/about",
+         "Pseudocode": "/pseudocode",
+         "Weather": "/weather"
+        }
+
 
 
 class WeatherLocations(db.Model):
@@ -71,14 +78,10 @@ def make_weather_call(location):
     print("this is a function that doesn't do anything yet")
 
 
-currentPage = "Home"
-names = {"Home": "home",
-         "About" : "about",
-         "Pseudocode": "pseudocode",
-         "Weather": "weather"
-        }
+
 @app.route("/")
 def index():
+
 
     return render_template("home.html", names = names, currentPage = currentPage)
 
