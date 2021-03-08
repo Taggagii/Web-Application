@@ -50,10 +50,10 @@ def get_temperature(location):
 def make_weather_call(location):
     pass
 
-
+names = {"fucker": "one"}
 @app.route("/")
 def index():
-    return render_template("home.html")
+    return render_template("home.html", names = names)
 
 
 @app.route("/testing/", methods = ['POST'])

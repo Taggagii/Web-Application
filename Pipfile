@@ -8,6 +8,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 bs4 = "*"
 requests = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
