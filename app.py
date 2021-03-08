@@ -4,6 +4,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -26,41 +27,47 @@ class WeatherLocation(db.Model):
     unit = db.Column(db.String, nullable=False)
     #warnings = db.Column(db.String, default=None)
 
-content = ""
-
-def getTemperature(location):
+def get_temperature(location):
     url = "https://www.google.com/search?q=temperature+in+" + location.strip()
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
     temp = [i.strip() for i in soup.find(class_="BNeawe iBp4i AP7Wnd").split('°')]
-    corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
-
-    location_text = [i.strip() for i in corrected_location.text.split(',')]
-    new_weather_entry = WeatherLocation(city=location_text[0],
-                                        country=location_text[1],
-                                        temperature=temp[0],
-                                        unit=temp[1])
-
     if temp:
-        return "The temp in " + corrected_location.text + " is " + temp.text
-    return 'Sorry! We couldn\'t resolve the location: "' + location + '"'
+        corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
+        location_text = [i.strip() for i in corrected_location.text.split(',')]
+
+        new_weather_entry = WeatherLocation(city=location_text[0],
+                                            country=location_text[1],
+                                            temperature=temp[0],
+                                            unit=temp[1])
+        entry = new_weather_entry
+
+        return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
+    return f"Sorry! We couldn\'t resolve the location: '{location}'."
+
+
+def make_weather_call(location):
+    pass
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", testing = content)
+    return render_template("home.html")
+
 
 @app.route("/testing/", methods = ['POST'])
 def testing():
     global content
     location = request.form['valuesInput']
-    content = getTemperature(location) #get the value
+    content = get_temperature(location) #get the value
     return redirect('/')
+
 
 @app.context_processor
 def override_url_for():
     return dict(url_for = dated_url_for)
+
 
 def dated_url_for(endpoint, **values):
     if endpoint == "static":

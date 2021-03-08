@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    #Boilerplate code from the homie that wrote flask tutorial 2
     <meta charset="UTF-8">
-    {% block title %}
-    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> #Sets page dimensions to fit current device
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/main.css')}}"> <!--Links the CSS styling to the page -->
+    {% block title %}{% endblock %}
+    <!-- Jinja blocks allow other pages to "build" on this boilerplate code much like a giant HTML variable, allowing
+    us to change something on just this page and apply it to any other page on the site -->
 </head>
 <body>
-    {% block navbar %}
-    {% endblock %}
+
+<nav>
+    <ul class="navbar">
+        {% block navbar %}
+        {% endblock %}
+    </ul>
+</nav>
+
     {% block body %}
     {% endblock %}
+
 </body>
 </html>
