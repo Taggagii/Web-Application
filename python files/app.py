@@ -36,6 +36,10 @@ def about():
 def pseudocode():
     return render_template('pseudocode.html', names = names, currentPage = 'Pseudocode')
 
+@app.route("/polls/")
+def polls():
+    return render_template('polls.html', names = names, currentPage = 'Polls')
+
 
 @app.context_processor
 def override_url_for():
