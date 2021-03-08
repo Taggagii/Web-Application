@@ -6,6 +6,9 @@
 
 
 {% block navbar %}
+<nav>
+    <ul class="navbar">
+
     {% for name in names %}
     <li>
         {% if name != currentPage %}
@@ -16,4 +19,6 @@
     </li>
     {% endfor %}
 
+    </ul>
+</nav>
 {% endblock %}

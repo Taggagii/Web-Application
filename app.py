@@ -8,39 +8,48 @@ import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+db = SQLAlchemy(app)
 
-names = {"Home": "home",
-        "About" : "about",
-        "Pseudocode": "pseudocode",
-        "Weather": "weather",
-        "Polls": "polls"
-        }
+page_link_dict = {"Home": "/",
+        "About" : "/about",
+        "Pseudocode": "/pseudocode",
+        "Weather": "/weather",
+        "Polls": "/polls"
+                  }
+
 
 @app.route("/")
 def default():
     return redirect("/home/")
 
+
 @app.route("/home/")
 def index():
-    return render_template("home.html", names = names, currentPage = "Home")
+    return render_template("home.html", pages=page_link_dict, currentPage="Home")
 
-@app.route("/weather/", methods = ['GET'])
-def weather():
-    return render_template("weather.html", names = names, currentPage = "Weather")
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', names = names, currentPage = "About")
+    return render_template('about.html', pages=page_link_dict, currentPage="About")
+
 
 @app.route("/pseudocode/")
 def pseudocode():
-    return render_template('pseudocode.html', names = names, currentPage = 'Pseudocode')
+    return render_template('pseudocode.html', pages = page_link_dict, currentPage="Pseudocode")
+
+
+@app.route("/weather/", methods = ['GET'])
+def weather():
+
+    return render_template("weather.html", pages=page_link_dict, currentPage="Weather")
+
 
 @app.route("/polls/")
 def polls():
-    return render_template('polls.html', names = names, currentPage = 'Polls')
+    return render_template('polls.html', pages=page_link_dict, currentPage='Polls')
 
 
+#Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
 @app.context_processor
 def override_url_for():
     return dict(url_for = dated_url_for)
