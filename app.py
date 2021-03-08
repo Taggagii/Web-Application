@@ -8,6 +8,7 @@ import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
 #setting up database
 db = SQLAlchemy(app)
 db.drop_all()
@@ -27,7 +28,6 @@ class WeatherLocations(db.Model):
     #wind = db.Column(db.Integer, nullable=False)
     unit = db.Column(db.String, nullable=False)
     #warnings = db.Column(db.String, default=None)
-
 def get_temperature(location):
     url = "https://www.google.com/search?q=temperature+in+" + location.strip()
     page = requests.get(url)
@@ -47,23 +47,48 @@ def get_temperature(location):
         return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
     return f"Sorry! We couldn\'t resolve the location: '{location}'."
 
+# def get_temperature(location):
+#     url = "https://www.google.com/search?q=temperature+in+" + location.strip()
+#     page = requests.get(url)
+#     soup = BeautifulSoup(page.content, "html.parser")
+#
+#     temp = [i.strip() for i in soup.find(class_="BNeawe iBp4i AP7Wnd").split('°')]
+#     if temp:
+#         corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
+#         location_text = [i.strip() for i in corrected_location.text.split(',')]
+#
+#         new_weather_entry = WeatherLocation(city=location_text[0],
+#                                             country=location_text[1],
+#                                             temperature=temp[0],
+#                                             unit=temp[1])
+#         entry = new_weather_entry
+#
+#         return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
+#     return f"Sorry! We couldn\'t resolve the location: '{location}'."
+
 
 def make_weather_call(location):
     print("this is a function that doesn't do anything yet")
 
 
-names = {"fucker": "one"}
+currentPage = "Home"
+names = {"Home": "home",
+         "About" : "about",
+         "Pseudocode": "pseudocode",
+         "Weather": "weather"
+        }
 @app.route("/")
 def index():
-    return render_template("home.html", names=names)
+
+    return render_template("home.html", names = names, currentPage = currentPage)
 
 
-@app.route("/testing/", methods = ['POST'])
-def testing():
-    global content
-    location = request.form['valuesInput']
-    content = get_temperature(location) #get the value
-    return redirect('/')
+# @app.route("/testing/", methods = ['POST'])
+# def testing():
+#     global content
+#     location = request.form['valuesInput']
+#     content = get_temperature(location) #get the value
+#     return redirect('/')
 
 
 @app.context_processor
