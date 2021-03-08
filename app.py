@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
+from project_classes.weather import Weather
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -14,11 +15,11 @@ db = SQLAlchemy(app)
 db.drop_all()
 
 currentPage = "Home"
-names = {"Home": "/",
-         "About": "/about",
-         "Pseudocode": "/pseudocode",
-         "Weather": "/weather"
-        }
+pages_dict = {"Home": "/",
+            "About": "/about",
+            "Pseudocode": "/pseudocode",
+            "Weather": "/weather"
+              }
 
 
 
@@ -35,6 +36,7 @@ class WeatherLocations(db.Model):
     #wind = db.Column(db.Integer, nullable=False)
     unit = db.Column(db.String, nullable=False)
     #warnings = db.Column(db.String, default=None)
+
 def get_temperature(location):
     url = "https://www.google.com/search?q=temperature+in+" + location.strip()
     page = requests.get(url)
@@ -78,12 +80,17 @@ def make_weather_call(location):
     print("this is a function that doesn't do anything yet")
 
 
-
 @app.route("/")
 def index():
+    return render_template("home.html", pages_dict=pages_dict, currentPage = currentPage)
 
 
-    return render_template("home.html", names = names, currentPage = currentPage)
+@app.route("/weather", methods=['GET', 'POST'])
+def weather_app():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("weather.html", name="Weather", pages_dict=pages_dict)
 
 
 # @app.route("/testing/", methods = ['POST'])

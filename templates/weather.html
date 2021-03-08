@@ -1,18 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<title>JDGroup - Weather</title>
-{% endblock %}
-
-{% block navbar %}
-    {% for name in names %}
-    <li>
-        <a href = "{{ names }}">{{ names[name] }}</a>
-    </li>
-    {% endfor %}
-
-{% endblock %}
-
 {% block body %}
+
+<form action="/weather" method="POST">
+    <input id="location" type="text">
+    <input>
+</form>
 
 {% endblock %}

@@ -16,7 +16,7 @@
 <nav>
     <ul class="navbar">
 
-        {% for name in names %}
+        {% for name in pages_dict %}
         <li>
         {% if name != currentPage %}
             <a href = "{{ names[name] }}">{{ name }}</a>
