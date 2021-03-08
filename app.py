@@ -9,86 +9,31 @@ import re
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
-#setting up database
-db = SQLAlchemy(app)
-db.drop_all()
-
-
-
-class WeatherLocations(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    city = db.Column(db.String, nullable=False)
-    country = db.Column(db.String, nullable=False)
-    #lat = db.Column(db.Decimal, default=None)
-    #lon = db.Column(db.Decimal, default=None)
-    last_call = db.Column(db.DateTime, default=datetime.utcnow())
-    temperature = db.Column(db.Integer, nullable=False)
-    #precipitation = db.Column(db.Integer, nullable=False)
-    #humidity = db.Column(db.Integer, nullable=False)
-    #wind = db.Column(db.Integer, nullable=False)
-    unit = db.Column(db.String, nullable=False)
-    #warnings = db.Column(db.String, default=None)
-def get_temperature(location):
-    url = "https://www.google.com/search?q=temperature+in+" + location.strip()
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
-
-    temp = [i.strip() for i in soup.find(class_="BNeawe iBp4i AP7Wnd").split('°')]
-    if temp:
-        corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
-        location_text = [i.strip() for i in corrected_location.text.split(',')]
-
-        new_weather_entry = WeatherLocations(city=location_text[0],
-                                             country=location_text[1],
-                                             temperature=temp[0],
-                                             unit=temp[1])
-        entry = new_weather_entry
-
-        return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
-    return f"Sorry! We couldn\'t resolve the location: '{location}'."
-
-# def get_temperature(location):
-#     url = "https://www.google.com/search?q=temperature+in+" + location.strip()
-#     page = requests.get(url)
-#     soup = BeautifulSoup(page.content, "html.parser")
-#
-#     temp = [i.strip() for i in soup.find(class_="BNeawe iBp4i AP7Wnd").split('°')]
-#     if temp:
-#         corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
-#         location_text = [i.strip() for i in corrected_location.text.split(',')]
-#
-#         new_weather_entry = WeatherLocation(city=location_text[0],
-#                                             country=location_text[1],
-#                                             temperature=temp[0],
-#                                             unit=temp[1])
-#         entry = new_weather_entry
-#
-#         return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
-#     return f"Sorry! We couldn\'t resolve the location: '{location}'."
-
-
-def make_weather_call(location):
-    print("this is a function that doesn't do anything yet")
-
-
-currentPage = "Home"
 names = {"Home": "home",
-         "About" : "about",
-         "Pseudocode": "pseudocode",
-         "Weather": "weather"
+        "About" : "about",
+        "Pseudocode": "pseudocode",
+        "Weather": "weather",
         }
+
 @app.route("/")
+def default():
+    return redirect("/home/")
+
+@app.route("/home/")
 def index():
+    return render_template("home.html", names = names, currentPage = "Home")
 
-    return render_template("home.html", names = names, currentPage = currentPage)
+@app.route("/weather/", methods = ['GET'])
+def weather():
+    return render_template("weather.html", names = names, currentPage = "Weather")
 
+@app.route('/about/')
+def about():
+    return render_template('about.html', names = names, currentPage = "About")
 
-# @app.route("/testing/", methods = ['POST'])
-# def testing():
-#     global content
-#     location = request.form['valuesInput']
-#     content = get_temperature(location) #get the value
-#     return redirect('/')
+@app.route("/pseudocode/")
+def pseudocode():
+    return render_template('pseudocode.html', names = names, currentPage = 'Pseudocode')
 
 
 @app.context_processor

@@ -1,22 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 
 {% block title %}
 <title>JDGroup - Home</title>
 {% endblock %}
 
-{% block navbar %}
-    {% for name in names %}
-    <li>
-        {% if name != currentPage %}
-            <a href = "{{ names[name] }}">{{ name }}</a>
-        {% else %}
-            <a class = "currentNav" href = "{{ names[name] }}">{{ name }}</a>
-        {% endif %}
-    </li>
-    {% endfor %}
-
-{% endblock %}
 
 {% block body %}
-
+<div class = "backingBox">
+    <h1 class = "center" id = "heading">Welcome to the page</h1>
+    <br>
+    <p>
+        The goal of this project is to make a blah blah blah <br> write a whole bunch of sappy shit here and stuff
+    </p>
+</div>
 {% endblock %}
