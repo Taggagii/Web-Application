@@ -7,7 +7,11 @@
 {% block navbar %}
     {% for name in names %}
     <li>
-        <a href = "{{ names[name] }}">{{ name }}</a>
+        {% if name != currentPage %}
+            <a href = "{{ names[name] }}">{{ name }}</a>
+        {% else %}
+            <a class = "currentNav" href = "{{ names[name] }}">{{ name }}</a>
+        {% endif %}
     </li>
     {% endfor %}
 

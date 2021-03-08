@@ -51,6 +51,7 @@ class WeatherLocation(db.Model):
 def make_weather_call(location):
     pass
 
+currentPage = "Home"
 names = {"Home": "home",
          "About" : "about",
          "Pseudocode": "pseudocode",
@@ -58,7 +59,7 @@ names = {"Home": "home",
         }
 @app.route("/")
 def index():
-    return render_template("home.html", names = names)
+    return render_template("home.html", names = names, currentPage = currentPage)
 
 
 # @app.route("/testing/", methods = ['POST'])
