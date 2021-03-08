@@ -13,6 +13,7 @@ names = {"Home": "home",
         "About" : "about",
         "Pseudocode": "pseudocode",
         "Weather": "weather",
+        "Polls": "polls"
         }
 
 @app.route("/")

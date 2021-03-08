@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block title %}
+<title>JDGroup - {{ currentPage }}</title>
+{% endblock %}
+
+
 {% block navbar %}
     {% for name in names %}
     <li>
