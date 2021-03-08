@@ -13,7 +13,8 @@ db = SQLAlchemy(app)
 db.drop_all()
 
 
-class WeatherLocation(db.Model):
+
+class WeatherLocations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     city = db.Column(db.String, nullable=False)
     country = db.Column(db.String, nullable=False)
@@ -37,10 +38,10 @@ def get_temperature(location):
         corrected_location = soup.find(class_="BNeawe tAd8D AP7Wnd")
         location_text = [i.strip() for i in corrected_location.text.split(',')]
 
-        new_weather_entry = WeatherLocation(city=location_text[0],
-                                            country=location_text[1],
-                                            temperature=temp[0],
-                                            unit=temp[1])
+        new_weather_entry = WeatherLocations(city=location_text[0],
+                                             country=location_text[1],
+                                             temperature=temp[0],
+                                             unit=temp[1])
         entry = new_weather_entry
 
         return f"The temperature in {entry.city}, {entry.country} is {entry.temperature}°{entry.unit}."
@@ -48,12 +49,13 @@ def get_temperature(location):
 
 
 def make_weather_call(location):
-    pass
+    print("this is a function that doesn't do anything yet")
+
 
 names = {"fucker": "one"}
 @app.route("/")
 def index():
-    return render_template("home.html", names = names)
+    return render_template("home.html", names=names)
 
 
 @app.route("/testing/", methods = ['POST'])
@@ -79,4 +81,4 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug=True)
