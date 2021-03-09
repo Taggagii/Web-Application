@@ -1,18 +1,16 @@
 from flask import *
-from flask_sqlalchemy import *
 import os
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
-from packages.weather import WeatherRequest
+from packages.weather import Weather
+from models import get_all_weather, add_weather, reset_weather
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app) #josh if you move the database I will hunt you down mark my words
 
 page_link_dict = {
-        "Home": "/home",
+        "Home": "/home/",
         "About" : "/about/",
         "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
@@ -43,10 +41,15 @@ def pseudocode():
     return render_template('pseudocode.html', pages=page_link_dict, currentPage="Pseudocode")
 
 
-@app.route("/weather/", methods = ['GET'])
+@app.route("/weather/", methods = ['GET', 'POST'])
 def weather():
-    weather_dict = {}
-    return render_template("weather.html", pages=page_link_dict, currentPage="Weather", weather=weather_dict)
+    weather_data = None
+
+    if request.method == 'POST':
+        weather_data = Weather(request.form.get('location')).weather_dict
+    else:
+        pass
+    return render_template("weather.html", pages=page_link_dict, currentPage="Weather", weather=weather_data)
 
 
 @app.route("/polls/")
@@ -71,3 +74,5 @@ def dated_url_for(endpoint, **values):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
