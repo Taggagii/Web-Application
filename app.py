@@ -6,12 +6,13 @@ from datetime import datetime
 import re
 from packages.weather import Weather
 from models import get_all_weather, add_weather, reset_weather
-
+from packages.polls.polls import Polls
 app = Flask(__name__)
 
 db_file = 'site.db'
 
 weather_obj = Weather(db_file)
+polls_class = Polls(db_file)
 
 page_link_dict = {
         "Home": "/home/",
@@ -80,12 +81,20 @@ def create_poll():
         print(poll_question)
         print(poll_choices)
         polls_class.add_poll(poll_question, poll_choices)
-        print(polls_class.polls)
-        return redirect("/polls/")
+        id = max(polls_class.polls.keys())
+        return redirect("/polls/" + str(id) + "/")
+    else:
+        return render_template("createpoll.html")
+
 
 @app.route("/polls/")
 def polls():
     return render_template('polls.html', pages=page_link_dict, currentPage='Polls')
+
+@app.route("/polls/<int:id>/")
+def show_poll(id):
+    print(polls_class.get_poll(id))
+    return render_template("show_poll.html", pages = page_link_dict, currentPage = 'Polls', polls_dict = polls_class.get_poll(id))
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
