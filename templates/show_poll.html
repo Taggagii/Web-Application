@@ -1,0 +1,14 @@
+{% extends 'base_with_nav.html' %}
+
+
+{% block body %}
+    <div class = "backingBox">
+        <h1 class = "center" class = "underline"> {{ polls_dict["Question"] }}</h1>
+        <br>
+        <ul class = "center">
+            {% for choice in polls_dict["Votes"] %}
+            <li style = "">{{ choice }} {{ polls_dict["Votes"][choice] }}</li><br>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,20 +1,20 @@
 from flask import *
 from flask_sqlalchemy import *
 import os
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-import re
+from packages.polls.polls import Polls
+
+db_name = "site.db"
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+polls_class = Polls(db_name)
 
-names = {"Home": "home",
+page_link_dict = {"Home": "home",
         "About" : "about",
         "Pseudocode": "pseudocode",
         "Weather": "weather",
-        "Polls": "polls"
-        }
+        "Polls": "polls",
+                  }
+
 
 @app.route("/")
 def default():
@@ -22,23 +22,41 @@ def default():
 
 @app.route("/home/")
 def index():
-    return render_template("home.html", names = names, currentPage = "Home")
+    return render_template("home.html", pages = page_link_dict, currentPage ="Home")
 
 @app.route("/weather/", methods = ['GET'])
 def weather():
-    return render_template("weather.html", names = names, currentPage = "Weather")
+    return render_template("weather.html", pages = page_link_dict, currentPage ="Weather")
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', names = names, currentPage = "About")
+    return render_template('about.html', pages = page_link_dict, currentPage ="About")
 
 @app.route("/pseudocode/")
 def pseudocode():
-    return render_template('pseudocode.html', names = names, currentPage = 'Pseudocode')
+    return render_template('pseudocode.html', pages = page_link_dict, currentPage ='Pseudocode')
 
 @app.route("/polls/")
 def polls():
-    return render_template('polls.html', names = names, currentPage = 'Polls')
+    return render_template('polls.html', pages = page_link_dict, currentPage ='Polls')
+
+
+@app.route("/polls/createpoll/", methods = ['GET', 'POST'])
+def create_poll():
+    if request.method == "POST":
+        poll_question = request.form['pollQuestion']
+        poll_choices = request.form.getlist('pollChoices')[:-1]
+        polls_class.add_poll(poll_question, poll_choices)
+        id = max(polls_class.polls.keys())
+        return redirect("/polls/" + str(id) + "/")
+    else:
+        return render_template("createpoll.html")
+
+@app.route("/polls/<int:id>/")
+def show_poll(id):
+    print(polls_class.get_poll(id))
+    return render_template("show_poll.html", pages = page_link_dict, currentPage = 'Polls', polls_dict = polls_class.get_poll(id))
+
 
 
 @app.context_processor
@@ -56,4 +74,4 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
