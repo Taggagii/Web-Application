@@ -45,7 +45,6 @@ def pseudocode():
     return render_template('pseudocode.html', pages=page_link_dict, currentPage="Pseudocode")
 
 
-<<<<<<< HEAD
 @app.route("/weather/", methods=['GET', 'POST'])
 def weather():
     if request.method == 'POST':
