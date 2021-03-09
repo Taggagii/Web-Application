@@ -9,6 +9,10 @@ from models import get_all_weather, add_weather, reset_weather
 
 app = Flask(__name__)
 
+db_file = 'site.db'
+
+weather_obj = Weather(db_file)
+
 page_link_dict = {
         "Home": "/home/",
         "About" : "/about/",
@@ -18,7 +22,7 @@ page_link_dict = {
                   }
 
 
-@app.route("/") #Just a redirect for the default enpoint. All homepage changes should be made to /home/
+@app.route("/")  # Just a redirect for the default end point. All homepage changes should be made to /home/
 def default():
     return redirect("/home/")
 
@@ -41,15 +45,30 @@ def pseudocode():
     return render_template('pseudocode.html', pages=page_link_dict, currentPage="Pseudocode")
 
 
-@app.route("/weather/", methods = ['GET', 'POST'])
+@app.route("/weather/", methods=['GET', 'POST'])
 def weather():
-    weather_data = None
-
     if request.method == 'POST':
-        weather_data = Weather(request.form.get('location')).weather_dict
+        if error := weather_obj.add_weather(request.form['location']):
+            error_dict = {'source': '/weather/', 'error': error}
+            return render_template("error.html",
+                               pages=page_link_dict,
+                               currentPage="Error",
+                               e=error_dict)
+        else:
+            return redirect('/weather/')
     else:
-        pass
-    return render_template("weather.html", pages=page_link_dict, currentPage="Weather", weather=weather_data)
+        weather_data = weather_obj.get_all_weather()
+        print('testing', weather_data)
+        return render_template("weather.html",
+                               pages=page_link_dict,
+                               currentPage="Weather",
+                               weather_readings=weather_data)
+
+
+@app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
+def delete_weather(reading_id):
+    weather_obj.delete_weather(reading_id)
+    return redirect('/weather/')
 
 
 @app.route("/polls/")
