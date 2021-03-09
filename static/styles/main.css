@@ -27,6 +27,9 @@ html, #pollButton{
 }
 
 
+.underline {
+  text-decoration: underline;
+}
 
 .center {
   margin: auto;

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>Create Poll</title>
+{% endblock %}
+
+{% block body %}
+    <div class = "backingBox">
+        <form action = "/polls/createpoll/" method = "POST">
+            <div class = "center">
+                <input class = "center" placeholder = "Poll Question" type = "text" name = "pollQuestion" id = "pollQuestion">
+            </div>
+            <div id = "choices">
+                <input placeholder = "Choice 1" type = "text" name = "pollChoices" id = "choice:1">
+            </div>
+            <div class = "center">
+                <br><input id = "pollButton" type = "submit" value = "Ask Question">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+checkIfEdited();
+var current = 1;
+function checkIfEdited()
+{
+    value = document.getElementById(`choice:${current}`)
+    if (value !== null && value.value !== "")
+    {
+        current++;
+        document.getElementById("choices").insertAdjacentHTML("beforeend", `<br><input placeholder="Choice ${current}" type="text" name="pollChoices" id="choice:${current}">`);
+    }
+    setTimeout(checkIfEdited, 0);
+}
+{% endblock %}
