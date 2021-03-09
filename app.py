@@ -46,9 +46,11 @@ def create_poll():
     if request.method == "POST":
         poll_question = request.form['pollQuestion']
         poll_choices = request.form.getlist('pollChoices')[:-1]
+        print(poll_question)
+        print(poll_choices)
         polls_class.add_poll(poll_question, poll_choices)
-        id = max(polls_class.polls.keys())
-        return redirect("/polls/" + str(id) + "/")
+        print(polls_class.polls)
+        return redirect("/polls/")
     else:
         return render_template("createpoll.html")
 
@@ -74,4 +76,4 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
