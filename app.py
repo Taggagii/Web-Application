@@ -45,6 +45,7 @@ def pseudocode():
     return render_template('pseudocode.html', pages=page_link_dict, currentPage="Pseudocode")
 
 
+<<<<<<< HEAD
 @app.route("/weather/", methods=['GET', 'POST'])
 def weather():
     if request.method == 'POST':
@@ -65,11 +66,23 @@ def weather():
                                weather_readings=weather_data)
 
 
+
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
 def delete_weather(reading_id):
     weather_obj.delete_weather(reading_id)
     return redirect('/weather/')
 
+
+@app.route("/polls/createpoll/", methods = ['GET', 'POST'])
+def create_poll():
+    if request.method == "POST":
+        poll_question = request.form['pollQuestion']
+        poll_choices = request.form.getlist('pollChoices')[:-1]
+        print(poll_question)
+        print(poll_choices)
+        polls_class.add_poll(poll_question, poll_choices)
+        print(polls_class.polls)
+        return redirect("/polls/")
 
 @app.route("/polls/")
 def polls():
@@ -93,5 +106,8 @@ def dated_url_for(endpoint, **values):
 
 if __name__ == "__main__":
     app.run(debug=True)
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> JoshisTesting
