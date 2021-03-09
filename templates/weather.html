@@ -1,5 +1,31 @@
 {% extends 'base_with_nav.html' %}
 
 {% block body %}
+<div class="backingBox">
+
+
+    {% if weather_readings == [] %}
+        <h2 class="center">You haven't requested any weather data yet. Make a weather data request below:</h2>
+    {% else %}
+        {% for weather in weather_readings %}
+        <div class="weatherBox">
+            <a href="/weather/delete/{{ weather[0] }}">
+                <img src="/static/styles/cancel.svg" alt="delete weather reading" class="deleteButton">
+            </a>
+            <h2>{{ weather[1] }}, {{ weather[2] }}</h2>
+            <img src="/static/styles/heat.svg" alt="thermometer" class="thermometer">
+            <h1>{{ weather[3] }}°{{ weather[4] }}</h1>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <form action="/weather/" method="post" class="center">
+        <input type="text" id="location" name="location" placeholder="eg. Toronto, Canada">
+        <input type="submit" id="submit">
+    </form>
+
+
+
+</div>
 
 {% endblock %}

@@ -6,15 +6,20 @@
 
 
 {% block navbar %}
+<nav>
+    <ul class="navbar">
+
     {% for page in pages %}
     <li>
-        {% if name != currentPage %}
-            <a href = "/{{ pages[page] }}">{{ page }}</a>
+        {% if page != currentPage %}
+            <a href = "{{ pages[page] }}">{{ page }}</a>
         {% else %}
-            <a class = "currentNav" href = "/{{ pages[pagea] }}">{{ page }}</a>
+            <a class = "currentNav" href = "{{ pages[page] }}">{{ page }}</a>
         {% endif %}
     </li>
     {% endfor %}
 
+    </ul>
+</nav>
 {% endblock %}
 
