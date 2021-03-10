@@ -2,13 +2,247 @@
 
 
 {% block body %}
-<div class="backingBox">
+<div class="backingBox" xmlns="http://www.w3.org/1999/html">
+    <div class="aboutSection">
     <h1 class="aboutHeader">Introduction</h1>
     <p class="aboutBody">
-        <q class="aboutQuote"></q>
-    </p>
-
-
+        With over 4 years of coding experience between the two of us, the pressure was on to make our final project a
+        spectacle. We went through a rigorous process of whiteboarding, yelling at Josh, prototyping, more yelling at
+        Josh, and eventually settled on the fabled full-stack web application. But to truly understand what we've
+        created, one must look first at what we didn't.</p>
+        <ul>
+            <li>
+                <strong>Game Engine</strong> - It was first proposed that we construct a game engine. It quickly became apparent, however,
+                that a game engine was really just a collection of existing components that we would either have to build or
+                get from existing sources. At this point we were playing with Lego – either we built an injection mold and
+                started creating individual plastic pieces from scratch, or we just bought a kit off the shelf and tried to
+                put it together without reading the instructions. Either way, bad choice.
+            </li>
+            <li>
+                <strong>Operating System</strong> - Because biting off more than we could chew had worked out so very well the last time,
+                we followed up with an even bigger project. Once again, Google informed us that we could assemble a
+                Linux "operating system" by importing a few packages into a utility, or we could head out to the desert
+                and start digging for silicon.
+            </li>
+            <li>
+                <strong>NFT Trader</strong> - There's a guy named Mark Cuban who said "NFT == good". Mark Cuban is very
+                rich. I proposed making a website to trade NFTs. I then realized I knew nothing about NFTs. That idea
+                was scrapped, but it formed a workable base for what would become the actual project. <br><br>
+            </li>
+        </ul>
+        <p class="aboutBody">
+            With these terrible ideas out of the way, merely a month's worth of classes into the course, we finally settled on
+        something that we might be able to produce from start to finish.
+        </p>
+    </div>
+    <br>
+    <div class="aboutSection">
+        <h1 class="aboutHeader">Full Stack</h1>
+        <p class="aboutBody">
+            If you have ever dipped a toe into the world of software engineering, chances are you have come across this
+            term quite a bit. Besides making full stacks of cash, full-stack developers are charged with,
+            unsurprisingly, making full-stack applications. What the "stack" is, varies greatly between and even within
+            coding languages, but at its most abstract, the stack is composed of three parts that make modern web
+            applications work the way they do: frontend, server, and database. The software world is rife with
+            buzzwords, but it all boils down to the same basic interactions.
+        </p>
+        <br>
+        <p class="aboutBody">
+            A web application starts and ends with the <strong>frontend</strong>, which is everything that the end-user interacts with. The lowest
+            level of data that an internet browser receives is Hypertext Markup Language (HTML). This is more or less a
+            glorified text file of structures called "tags" that tell your browser how to organize data. HTML by itself
+            is functional but unappealing. Cascading Style Sheets (CSS) "style" singular or groups of tags, allowing
+            developers to fine-tune the appearance and formatting of their pages. Besides displaying data, special HTML
+            tags allow users to input data and send it to the application as well. This is great for a blog, where you
+            only need to display static information to the user, but what about when you want your web page to do
+            something, or you want to update the information on a group of pages without modifying them all
+            individually? That's where our friend the server comes in.
+        </p>
+        <br>
+        <p class="aboutBody">
+            The <strong>server</strong> does exactly what the name suggests. When a user goes to a web page, they are
+            making a request to another
+            server through the internet. A server is just a specialized type of computer that serves, receives, and
+            processes information for client devices like desktop computers and smartphones. The code that runs on
+            the server is an executable, just like a calculator script you've written on your own computer in Python or
+            the like. The only difference is that this program sends and receives information from other devices and
+            does stuff with it. A web framework is a sort of extensive package that you use with a programming language
+            like JavaScript or Python to streamline the web development process and eliminate some of the more tedious
+            steps in sending information around. When you search for a page on Google, the text you input into the
+            search bar is sent across the web to one of Google's servers, which uses its algorithm to compile a list
+            of matching web pages. The server then assembles them into a fancy page that takes you to those other links
+            when you click the appropriate heading, sends that back to your browser and has your browser render it.
+            On reasonably fast internet connections, this entire process can be finished in the blink of an eye.
+            The issue with just relying on the server to do everything, however, is memory. When you run something like
+            a Python script, every bit of data it works with lives in the computer (i.e. server)'s memory, specifically
+            its Random Access Memory (RAM). This is great while the script is using the data, but the moment the script
+            stops running for any reason, all that data gets flushed out of the RAM's limited space to make room for
+            other processes. For this reason, the server needs to store information in a persistent format on a physical
+            storage device. For humans, that is usually achieved by saving a file in a folder on our computer. But the
+            way we structure data for human interaction is not very helpful or efficient for computers. Instead, they
+            make use of a database.
+        </p>
+        <br>
+        <p class="aboutBody">
+            The <strong>database</strong> is where all of an application's persistent data is stored, in a form that the
+            computer plays nicely with.
+            While everything boils down to binary, the way we interact with these data structures is as tables (the
+            table format is specific to relational databases, but that's all we're covering here). A database schema
+            defines the layout of the database, essentially all the tables and each column in those tables. For example,
+            if I wanted to keep a table of customers for my store, I might define my schema with one table that has four
+            columns: a primary key (some sort of unique identifier for every customer, usually an integer), the
+            customer's name (text), the last time they bought something (a date-time type), and their address
+            (also text). Once my database knows how the data is organized in that table, I can begin basic CRUD
+            operations (Create, Read, Update, Delete). Since databases aren't written in a high-level scripting language
+            like Python or JavaScript, my server program needs a way to interface with it. This is most often done in
+            Structured Query Language (SQL). SQL is a more simplistic language that only edits information in the
+            database – when the server wants to talk to the database, it has to execute the appropriate SQL query.
+        </p>
+        <br>
+        <p class="aboutBody">
+            TL;DR Frontend is the stuff the user interacts directly with and sees, database is where the application
+            keeps all information it needs to remember for later, and the server connects the two and does all the
+            traditional "programming" and processing.
+            </p>
+    </div>
+    <br>
+    <div class="aboutSection">
+        <h1 class="aboutHeader">I Hope You Saved 30 Minutes of Your Life and Skipped to Here</h1>
+        <p class="aboutBody">
+            So what is our application doing, in the context of the full-stack model?
+        </p>
+        <br>
+        <p class="aboutBody">
+            <strong>Frontend</strong> – Each base web page is written in HTML, but uses a library called Jinja2 to
+            dynamically render data. Whenever our server renders an HTML page to the user, it passes in information as
+            Python variables or data structures, and the Jinja syntax causes that information to be displayed visually
+            inside HTML elements (and thus, formatted nicely by our CSS instructions). Jinja also allows us to leverage
+            Python's conditional statements like for loops and if statements to render data of variable length and
+            introduce more dynamic behavior. As if that weren't enough, we use Jinja to create HTML "templates". Only
+            one or two pages contain the boilerplate code like "DOCTYPE HTML" and a link to the CSS file, and every
+            other page we build "extends" from that base page. This means when we make a change to the format of, say,
+            the navigation bar at the top of the site, we only have to edit the "parent" page and the changes apply
+            across any "child" pages.
+        </p>
+        <br>
+        <p class="aboutBody">
+            <strong>Backend</strong> – This is where the magic happens. Since the majority of our coding experience was
+            in Python, we opted to use the Flask framework. Another common Python web framework is Django, but it is
+            regarded as having a much steeper learning curve. Considering our inexperience with web applications and the
+            time limit, Flask was the better choice. Flask and its dependencies handle the nitty-gritty of having our
+            code talk to the browser by allowing us to recognize requests at a given URL (or route, also called an
+            endpoint) and trigger functions that process data, read or write from the database if necessary, and finally
+            render our HTML pages back to the user (passing data to Jinja in the process). This basic endpoint ->
+            function -> HTML render process is the foundation of every page on our site. Also, Flask's debug mode allows
+            us to run, find and fix errors, and rerun just as quickly as a basic Python script.
+        </p>
+            <br>
+        <p class="aboutBody">
+            <strong>Database</strong> – SQLite is a built-in library for Python that allows us to interact seamlessly
+            with our database and code, in a comfortably "Pythonic" syntax. While SQLite is not practical for
+            applications of any significant scale, it eliminates many of the more formal elements found in something
+            like MySQL and speeds up development significantly. Each project class is passed our database in the main
+            server script, and it only ever talks to the database about data that concerns it (for example, the weather
+            package generates a table for its weather readings, reads from that table, and writes to that table, but
+            knows nothing about the polls table the polls project maintains on the same database). More on this soon.
+        </p>
+    </div>
+    <br>
+    <div class="aboutSection">
+        <h1 class="aboutHeader">Pretending to be Real Developers 101</h1>
+        <p class="aboutBody">
+            <h2 class="aboutHeader">Clean Code</h2>
+        While our main goal for the project was to write code that worked, we wanted to put increased focus on the more
+        abstract design choices that, as David Malan would say, don't affect the correctness of our code, but its style
+        – how readable it is, and the way its parts fit together. This future-proofs our code if we ever want to add
+        features and makes everything much easier to understand for someone looking at the code for the first time.
+        </p>
+        <br>
+        <p class="aboutBody">
+            <h2 class="aboutHeader">Classes and Methods</h2>
+        When we started implementing each section of the site, we quickly realized the main application script was going
+        to be bloated if we simply defined every single function we ever planned to use inside of it. At a minimum, we
+        needed a function for every endpoint on our site. To alleviate this, we abstracted as many of our projects'
+        functions as we could into modules with classes. We also set up these functions to always return at most one
+        data structure to our endpoint functions, so we only ever pass a single parameter to the HTML renderer. For the
+        weather page, all the endpoint function deals with is taking in the text input from the user, passing that to
+        (an instance of) the weather class, and getting back a list of all the weather readings which is then rendered.
+        The main application never talks to the database – when we want to implement a behavior for a given page, that
+        always goes to the page's module. The weather module creates the table that stores its data, sends a location
+        to Google, gets back the weather, puts it in the table, and reads back all data currently in the table. But this
+        abstraction has an even more important purpose – making collaboration possible.
+        </p>
+        <br>
+        <p class="aboutBody">
+            <h2 class="aboutHeader">Web Hosting</h2>
+        A web application is great and all, but it's really just a roundabout python script unless you can deploy it. We
+        wanted people to be able to take out their phone or computer, go to a specific IP address, and be able to
+        interact with our application. There are paid hosting services, but we had something better – Jacob. To host our
+        site, we would need a server computer that was always running and had a static IP – one that uniquely identifies
+        a server to any client that tries to connect. Jacob had both of these things, and after a couple of days of
+        testing, we could remotely access the server in Caledonia, clone our repository, run the code, and connect to it
+        from our devices over the school's Wi-Fi.
+        </p>
+        <br>
+        <p class="aboutBody">
+            <h2 class="aboutHeader">Git, GitHub, Pain, and Suffering</h2>
+        In an effort to push our professional standards somewhere above "hack job", we decided that using version
+        control software (VCS) like Git and its online hosting counterpart GitHub for this collaborative project was
+        necessary. While Git is the most popular VCS out there, the very concept of version control was foreign to us,
+        and there was a steep learning curve ahead.
+        </p>
+        <br>
+        <p class="aboutBody">
+        Our first issue, it seemed, would be our Python interpreter. To keep everything running on the same version, we needed
+        our Python environment to live in the code repository – the project itself – rather than relying on each device
+        that ran the code to have all the necessary dependencies. The method for doing this is a virtual environment,
+        and so we naively opted for the first library we could find, venv. All venv produced for us was a heap of errors
+        and it wasn't doing what we needed it to - as we fought with it for hours.  A short time after, we discovered
+        pipenv, and suddenly the world was right again. Pipenv easily integrated with our IDE, PyCharm, and stored all
+        of its guts in two tiny "Pipfiles" in our project. It was trivial, now, to clone the repository onto any
+        computer that could run Python and get it up and running. That was helpful since we started doing that a lot.
+        </p><br>
+        <p class="aboutBody">
+        Git is popular because it works. In an ideal world, you would write some code, your friend would write some code, and
+        Git would know exactly what parts you wanted to keep from both. Computers (at least as of 2021) still lack that
+        prescience, and so Git would frequently spit back something to the effect of "error: Merging is not possible
+        because you have unmerged files. hint: Fix them up in the work tree, and then use 'git add/rm &lt;file&gt;'
+        hint: as appropriate to mark resolution and make a commit." Besides the inherent contradiction – yes Git I KNOW
+        THE FILES ARE UNMERGED, THAT'S WHY I'M TRYING TO MERGE THEM – our inexperience with a "work tree" or "branches"
+        or any of that other VCS lingo made these error messages incomprehensible. Also, our project was in its infancy.
+        We were doing a lot of testing and scrapping of ideas, and our filing system wasn't consistent or organized. One
+        of us would be working on main.py, and the other would have decided to write the main code in app.py instead.
+        This further exacerbated our merging errors and often required one of us to just delete our local project and
+        re-clone the entire repository. Not only was that a pain, but it entirely defeated the purpose of using Git.
+        Eventually, we discovered how Git flagged sections of files for manual merging, and that finally allowed us to
+        move forward. By that time, we had also worked out a consistent file structure, and as previously mentioned,
+        abstracted our mini projects into their own separate modules that could be edited without touching each other's
+        code.
+        </p><br>
+        <p class="aboutBody">
+        Throughout the development process, we learned about collaboration not just with Git but in the abstract. After years of
+        writing code that only we understood fully, and then mindlessly commenting it out, we had to explain how our
+        code worked to each other, and have it play nicely together. This was… alright when we were sitting in class
+        looking over each other's shoulder, but when we attempted to discuss our code remotely – even when we were
+        looking at the same version of the same project – it was like we were speaking two different languages (although
+        when I was trying to explain SQL to Josh, I suppose I technically was). The idea that any number of people could
+        make a project start to finish, all remotely, still seems laughable.
+        </p>
+        <br>
+        <div class="aboutSection">
+            <h1 class="aboutHeader">Conclusion</h1>
+            <p class="aboutBody">
+                I think we made great strides in what was a limited time frame compared to prior years (although to be
+                fair, we spent most "course work" time on just the CCA). We may not have had much direction to start
+                with, but neither do pros and in the end, we developed our disparate ideas into something concrete. We
+                put a focus on not just making our code but also thinking about our code – making use of the whiteboard,
+                talking about what our code did before and while writing it, and holding ourselves to coding
+                conventions. In the same way that universities assess more than just an applicant's grades, employers
+                are looking for more than just a good coder. They need someone with these "soft skills" - one that can
+                actually work with other human beings.
+            </p>
+        </div>
+    </div>
 
 
 </div>
