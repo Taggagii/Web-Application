@@ -59,7 +59,6 @@ def weather():
             return redirect('/weather/')
     else:
         weather_data = weather_obj.get_all_weather()
-        print('testing', weather_data)
         return render_template("weather.html",
                                pages=page_link_dict,
                                currentPage="Weather",
@@ -78,11 +77,9 @@ def create_poll():
     if request.method == "POST":
         poll_question = request.form['pollQuestion']
         poll_choices = request.form.getlist('pollChoices')[:-1]
-        print(poll_question)
-        print(poll_choices)
         polls_class.add_poll(poll_question, poll_choices)
         id = max(polls_class.polls.keys())
-        return redirect("/polls/" + str(id) + "/")
+        return redirect("/polls/vote/" + str(id) + "/")
     else:
         return render_template("createpoll.html")
 
@@ -91,10 +88,21 @@ def create_poll():
 def polls():
     return render_template('polls.html', pages=page_link_dict, currentPage='Polls')
 
+@app.route("/polls/vote/<int:id>/", methods = ['GET', 'POST'])
+def vote_poll(id):
+    if request.method == "POST":
+        if "choices" in request.form:
+            choice = request.form["choices"]
+            polls_class.vote(id, choice)
+        return redirect("/polls/" + str(id) + "/")
+    else:
+        if id in polls_class.polls.keys():
+            return render_template("vote_poll.html", pages = page_link_dict, currentPage = 'Polls', polls_dict = polls_class.get_poll(id))
+        else:
+            return redirect("/polls/")
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    print(polls_class.get_poll(id))
-    return render_template("show_poll.html", pages = page_link_dict, currentPage = 'Polls', polls_dict = polls_class.get_poll(id))
+    return render_template("show_poll.html", pages = page_link_dict, currentPage = "Polls", polls_dict = polls_class.get_poll(id))
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94

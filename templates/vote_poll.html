@@ -1,0 +1,22 @@
+{% extends 'base_with_nav.html' %}
+
+
+{% block body %}
+    <div class = "backingBox">
+        <h1 class = "center" class = "underline"> {{ polls_dict["Question"] }}</h1>
+        <br>
+        <form action = "/polls/vote/{{polls_dict['ID']}}/" method = "POST">
+            <div>
+                {% for choice in polls_dict["Votes"] %}
+
+                <input type = "radio" name = "choices" value = "{{choice}}" id = {{choice}}>
+                <label for = {{choice}}>{{choice}}</label><br>
+                {% endfor %}
+                <br>
+                <div class = "center">
+                    <input type = "submit" value = "Vote" class = "pollButton">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -91,12 +91,3 @@ class Polls:
             print("ID does not exist")
             return 0
 
-
-
-
-polls = Polls("site.db")
-#polls.clear_table()
-# polls.add_poll("testing things", ['one', 'two', 'three'])
-# polls.vote(0, "one") #finally got voting working, that's where you are at
-print(polls.polls)
-

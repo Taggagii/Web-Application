@@ -6,14 +6,48 @@
         <h1 class = "center" class = "underline"> {{ polls_dict["Question"] }}</h1>
         <br>
         <div>
-            {% for choice in polls_dict["Votes"] %}
-            <label for = {{choice}} class = "radio">
-            <input type = "radio" name = "choices" id = {{choice}} class = "radio__input">
-            <div class = "radio__radio"></div>
-                <p>{{choice}}</p>
-            </label><br>
-            {% endfor %}
+
+            <table style = "width:100%">
+                <tr class = "underline">
+                    <th>Choice</th>
+                    <th>Votes</th>
+                </tr>
+
+                {% for choice in polls_dict["Votes"] %}
+                <tr style = "text-align: center;">
+                    <td>{{choice}}</td>
+                    <td>{{polls_dict["Votes"][choice]}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            <br>
+            <div class = "center">
+                <img style = "width: 20px; top: 4px; position: relative; cursor: pointer;" src="/static/styles/copy-icon.png" alt = "copy symbol" onclick = "copyLink()">
+                <h4 style = "display: inline-block;">Share:</h4>
+                <input id = "shareLink" style = "display: inline-block;"></input>
+            </div>
 
         </div>
+
     </div>
+{% endblock %}
+
+{% block script %}
+    var url = window.location.href.split('/');
+    var security = url[0];
+    var host = url[2];
+    var id = url[4];
+    var combine = `${security}//${host}/polls/vote/${id}/`;
+    document.getElementById("shareLink").value = combine;
+
+    function copyLink()
+    {
+        var value = document.getElementById("shareLink");
+        document.execCommand('copy');
+        value.select();
+
+        document.execCommand("copy");
+
+    }
 {% endblock %}

@@ -10,8 +10,52 @@
 </div>
 <div class = "backingBox">
     <div class = "center">
-        <input id="pollButton" type = "button" value = "Make Poll" onclick = 'window.location.href="/polls/createpoll/"'>
+        <input class="pollButton" type = "button" value = "Make Poll" onclick = 'window.location.href="/polls/createpoll/"'>
     </div>
 </div>
 
+<div class = "backingBox">
+    <h2 class = "center">Vote on a created poll</h2>
+    <div class = "center">
+        <br>
+        <input id = "urlVotingTransfer" type = "text" placeholder = "URL of poll or ID"><br><br>
+        <input onclick = "urlVoteTransfer()" type = "submit" class = "pollButton" id = "Testing" value = "Head to the Polls">
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+function urlVoteTransfer()
+{
+    function removeSpaces(array)
+    {
+        var i = 0;
+        while (i < array.length)
+        {
+            if (array[i] === "")
+            {
+                array.splice(i, 1);
+            }
+            else
+            {
+                i++;
+            }
+        }
+        return array;
+    }
+    var value = document.getElementById("urlVotingTransfer").value;
+    if (value !== null)
+    {
+        value = value.split("/");
+        value = removeSpaces(value);
+        var pollNumber = value[value.length - 1];
+        if (!isNaN(pollNumber))
+        {
+            window.location.replace("/polls/vote/" + pollNumber);
+        }
+
+    }
+}
 {% endblock %}
