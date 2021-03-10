@@ -16,7 +16,7 @@ polls_class = Polls(db_file)
 
 page_link_dict = {
         "Home": "/home/",
-        "About" : "/about/",
+        "About": "/about/",
         "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
         "Polls": "/polls/"
@@ -29,21 +29,21 @@ def default():
 
 
 # All endpoint returns should follow the format return("<current page>.html", pages=page_link_dict,
-# currentPage="<current page>" dictionary_of_parameters)
+# current_page="<current page>" dictionary_of_parameters)
 
 @app.route("/home/")
 def index():
-    return render_template("home.html", pages=page_link_dict, currentPage="Home")
+    return render_template("home.html", pages=page_link_dict, current_page="Home")
 
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', pages=page_link_dict, currentPage="About")
+    return render_template('about.html', pages=page_link_dict, current_page="About")
 
 
 @app.route("/pseudocode/")
 def pseudocode():
-    return render_template('pseudocode.html', pages=page_link_dict, currentPage="Pseudocode")
+    return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode")
 
 
 @app.route("/weather/", methods=['GET', 'POST'])
@@ -53,7 +53,7 @@ def weather():
             error_dict = {'source': '/weather/', 'error': error}
             return render_template("error.html",
                                pages=page_link_dict,
-                               currentPage="Error",
+                               current_page="Error",
                                e=error_dict)
         else:
             return redirect('/weather/')
@@ -61,9 +61,8 @@ def weather():
         weather_data = weather_obj.get_all_weather()
         return render_template("weather.html",
                                pages=page_link_dict,
-                               currentPage="Weather",
+                               current_page="Weather",
                                weather_readings=weather_data)
-
 
 
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
@@ -72,7 +71,7 @@ def delete_weather(reading_id):
     return redirect('/weather/')
 
 
-@app.route("/polls/createpoll/", methods = ['GET', 'POST'])
+@app.route("/polls/createpoll/", methods=['GET', 'POST'])
 def create_poll():
     if request.method == "POST":
         poll_question = request.form['pollQuestion']
@@ -86,7 +85,8 @@ def create_poll():
 
 @app.route("/polls/")
 def polls():
-    return render_template('polls.html', pages=page_link_dict, currentPage='Polls')
+    return render_template('polls.html', pages=page_link_dict, current_page='Polls')
+
 
 @app.route("/polls/vote/<int:id>/", methods = ['GET', 'POST'])
 def vote_poll(id):
@@ -97,12 +97,14 @@ def vote_poll(id):
         return redirect("/polls/" + str(id) + "/")
     else:
         if id in polls_class.polls.keys():
-            return render_template("vote_poll.html", pages = page_link_dict, currentPage = 'Polls', polls_dict = polls_class.get_poll(id))
+            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id))
         else:
             return redirect("/polls/")
+
+        
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages = page_link_dict, currentPage = "Polls", polls_dict = polls_class.get_poll(id))
+    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id))
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94

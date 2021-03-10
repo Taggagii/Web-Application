@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<title>JDGroup - {{ currentPage }}</title>
+<title>JDGroup - {{ current_page }}</title>
 {% endblock %}
 
 
@@ -11,7 +11,7 @@
 
     {% for page in pages %}
     <li>
-        {% if page != currentPage %}
+        {% if page != current_page %}
             <a href = "{{ pages[page] }}">{{ page }}</a>
         {% else %}
             <a class = "currentNav" href = "{{ pages[page] }}">{{ page }}</a>
