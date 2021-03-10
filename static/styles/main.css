@@ -60,13 +60,13 @@ html, #pollButton{
   display: flex;
   margin: 0;
   padding: 0;
-  overflow: scrolls;
+  overflow: hidden;
   background-color: gray;
   justify-content: space-between;
 }
 
 li a {
-  overflow: auto;
+  overflow: hidden;
   display: block;
   color: black;
 
