@@ -60,20 +60,21 @@ html, #pollButton{
   display: flex;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: scrolls;
   background-color: gray;
   justify-content: space-between;
 }
 
 li a {
-  overflow: hidden;
+  overflow: auto;
   display: block;
   color: black;
+
   text-align: center;
-  padding: 15px 1vw;
+  padding: 15px 0.2vw;
   margin-right: 20px;
   margin-left: 20px;
-  font-size: 1.2em;
+  font-size: min(1.2em, 3.1vw);
   text-decoration: none;
   transition: background-color 0.5s;
 }
