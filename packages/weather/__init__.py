@@ -52,15 +52,19 @@ class Weather:
         con.close()
         return weather_data_rows
 
-    def add_weather(self, location_raw):
+    def add_weather(self, location_raw, username=None):
         data = get_temperature(location_raw)
         if data['error']:
             return data['error']
         else:
             con = self.connect()
             cursor = con.cursor()
-            cursor.execute('INSERT INTO weather (city, country, temperature, unit) VALUES (?, ?, ?, ?)',
-                           (data['city'], data['country'], data['temperature'], data['unit']))
+            if username:
+                cursor.execute('INSERT INTO weather (city, country, temperature, unit) VALUES (?, ?, ?, ?, ?)',
+                               (data['city'], data['country'], data['temperature'], data['unit'], username))
+            else:
+                cursor.execute('INSERT INTO weather (city, country, temperature, unit) VALUES (?, ?, ?, ?)',
+                               (data['city'], data['country'], data['temperature'], data['unit']))
             con.commit()
             con.close()
 

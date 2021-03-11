@@ -1,0 +1,16 @@
+{% extends 'base_with_nav.html' %}
+
+{% block body %}
+<div class="backingBox">
+<h1>Sign Up</h1>
+<form class="signup" method="post" action="/signup/">
+    <label for="username">Username</label>
+    <input name="username" id="username" type="text"><br>
+    <label for="password">Password</label>
+    <input name="password" id="password" type="password"><br>
+    <input name="sign_in" type="submit" title="Sign In">
+</form>
+<h5>Already have an account? <a href="/login/">Log in!</a></h5>
+</div>
+
+{% endblock %}
