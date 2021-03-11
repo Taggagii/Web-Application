@@ -5,32 +5,30 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 from packages.weather import Weather
-from models import get_all_weather, add_weather, reset_weather
 from packages.polls.polls import Polls
+from packages.login import Login
 app = Flask(__name__)
+app.secret_key = "1234"
 
 db_file = 'site.db'
 
 weather_obj = Weather(db_file)
 polls_class = Polls(db_file)
+login_obj = Login(db_file)
 
 page_link_dict = {
         "Home": "/home/",
         "About": "/about/",
         "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
-        "Polls": "/polls/"
+        "Polls": "/polls/",
+        "Login": "/login/"
                   }
-
-
-@app.route("/")  # Just a redirect for the default end point. All homepage changes should be made to /home/
-def default():
-    return redirect("/home/")
 
 
 # All endpoint returns should follow the format return("<current page>.html", pages=page_link_dict,
 # current_page="<current page>" dictionary_of_parameters)
-
+@app.route("/")
 @app.route("/home/")
 def index():
     return render_template("home.html", pages=page_link_dict, current_page="Home")
@@ -69,6 +67,61 @@ def weather():
 def delete_weather(reading_id):
     weather_obj.delete_weather(reading_id)
     return redirect('/weather/')
+
+
+@app.route("/login/", methods=['GET', 'POST'])
+def login():
+    login_data = {}
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if login_obj.log_in(username, password):
+            session['user'] = username
+            del page_link_dict['Login']
+            page_link_dict[username] = '/profile/'
+            return redirect('/profile/')
+        else:
+            login_data['error'] = "Incorrect password. Make sure the account exists"
+
+    return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data)
+
+
+@app.route('/signup/', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if login_obj.sign_up(username, password):
+            session['user'] = username
+            del page_link_dict['Login']
+            page_link_dict[username] = '/profile/'
+            return redirect(url_for('profile'))
+    else:
+        return render_template('signup.html', pages=page_link_dict, current_page='Signup')
+
+
+@app.route('/logout/')
+def logout():
+    if 'user' in session:
+        del page_link_dict[session['user']]
+        page_link_dict['Login'] = '/login/'
+        del session['user']
+        return redirect(url_for('login'))
+    else:
+        return redirect(url_for('home'))
+
+
+@app.route('/profile/')
+def profile():
+    if session['user']:
+        user_data = {'username': session['user']}
+        return render_template('profile.html',
+                               pages=page_link_dict,
+                               current_page=user_data['username'],
+                               user_data=user_data)
+    else:
+        return render_template("login.html", pages=page_link_dict, current_page='Login')
 
 
 @app.route("/polls/createpoll/", methods=['GET', 'POST'])

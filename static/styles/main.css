@@ -106,3 +106,18 @@ height: 60px;
   padding: 20px 20px;
 }
 
+
+.aboutSection {
+  margin: 10px;
+}
+.aboutHeader {
+  margin: 15px;
+  line-height: 1em;
+}
+.aboutBody {
+}
+
+ul {
+  margin: 20px;
+}
+
