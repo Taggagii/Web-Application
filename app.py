@@ -24,8 +24,8 @@ page_link_dict = {
                   }
 
 
-# All endpoint returns should follow the format return("<current page>.html", pages=page_link_dict,
-# current_page="<current page>" dictionary_of_parameters)
+# All endpoint returns should follow the format return render_template("<current page>.html", pages=page_link_dict,
+# current_page="<current page>" <page data>=dictionary_of_parameters) or a redirect
 @app.route("/")
 @app.route("/home/")
 def index():

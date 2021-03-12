@@ -1,11 +1,51 @@
 {% extends 'base_with_nav.html' %}
 
 {% block body %}
-<div class = "backingBox">
-    <h1 class = "center" id = "heading">Welcome to the page</h1>
-    <br>
-    <p>
-        The goal of this project is to make a blah blah blah <br> write a whole bunch of sappy shit here and stuff
+<div class="backingBox">
+    <h1 class="homeHeader">ICS4U1 CCA - 2021</h1>
+    <h4 class="homeHeader">By Josh D. and Joe D.</h4>
+</div>
+
+{% if 'About' in pages %}
+<div class="backingBoxNarrow">
+    <h2 class="homeHeader"><a href="{{ pages['About'] }}" class="homeLink">About</a></h2>
+    <p class="aboutBody">
+        This gives a <i>very</i> detailed breakdown of our process behind building the site, as well as some of the
+        struggles we encountered along the way. A good read I think, but then again <i>I'm</i> the one who wrote it.
     </p>
 </div>
+{% endif %}
+
+{% if 'Pseudocode' in pages %}
+<div class="backingBoxNarrow">
+    <h2 class="homeHeader"><a href="{{ pages['Pseudocode'] }}" class="homeLink">Pseudocode</a></h2>
+    <p class="aboutBody">
+        Our GitHub repository can be found <a href="https://github.com/Taggagii/Web-Application">here</a>, and contains
+        detailed comments explaining what each of the (many) parts of our code does. For a more general abstraction,
+        we've written up some more general pseudocode.
+    </p>
+</div>
+{% endif %}
+
+{% if 'Weather' in pages %}
+<div class="backingBoxNarrow">
+    <h2 class="homeHeader"><a href="{{ pages['Weather'] }}" class="homeLink">Weather</a></h2>
+    <p class="aboutBody">
+        The weather app was out first foray into an application that actually did something. It sends the user's desired
+        location to an "API" which is really just web scraping from Google's weather page. The resultant temperature is
+        saved to the site's database, and then all temperature listings are displayed on the page. Users can also delete
+        readings they no longer need.
+    </p>
+</div>
+{% endif %}
+
+{% if 'Polls' in pages %}
+<div class="backingBoxNarrow">
+    <h2 class="homeHeader"><a href="{{ pages['Polls'] }}" class="homeLink">Polls</a></h2>
+    <p class="aboutBody">
+
+    </p>
+</div>
+{% endif %}
+
 {% endblock %}

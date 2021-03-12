@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import sqlite3 as sql
-from os import path
-from datetime import datetime
 
 
 def get_temperature(location):
