@@ -9,7 +9,7 @@ flask-sqlalchemy = "*"
 bs4 = "*"
 requests = "*"
 sqlalchemy = "*"
-passlib = "*"
+passlib = "==1.7.4"
 
 [dev-packages]
 
