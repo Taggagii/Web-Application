@@ -1,14 +1,12 @@
 from flask import *
 import os
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-import re
 from packages.weather import Weather
 from packages.polls.polls import Polls
 from packages.login import Login
+from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = "1234"
+app.permanent_session_lifetime = timedelta(minutes=10)
 
 db_file = 'site.db'
 
@@ -77,6 +75,7 @@ def login():
         password = request.form['password']
 
         if login_obj.log_in(username, password):
+            session.permanent = True
             session['user'] = username
             del page_link_dict['Login']
             page_link_dict[username] = '/profile/'
