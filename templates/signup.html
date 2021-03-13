@@ -6,6 +6,9 @@
 <form class="signup" method="post" action="/signup/">
     <label for="username">Username</label>
     <input name="username" id="username" type="text"><br>
+    {% if 'error' in signup_data %}
+    <p style="color: red;">{{ signup_data['error'] }}</p>
+    {% endif %}
     <label for="password">Password</label>
     <input name="password" id="password" type="password"><br>
     <input name="sign_in" type="submit" title="Sign In">

@@ -19,8 +19,7 @@ page_link_dict = {
         "About": "/about/",
         "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
-        "Polls": "/polls/",
-        "Login": "/login/"
+        "Polls": "/polls/"
                   }
 
 
@@ -29,17 +28,17 @@ page_link_dict = {
 @app.route("/")
 @app.route("/home/")
 def index():
-    return render_template("home.html", pages=page_link_dict, current_page="Home")
+    return render_template("home.html", pages=page_link_dict, current_page="Home", session=session)
 
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', pages=page_link_dict, current_page="About")
+    return render_template('about.html', pages=page_link_dict, current_page="About", session=session)
 
 
 @app.route("/pseudocode/")
 def pseudocode():
-    return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode")
+    return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode", session=session)
 
 
 @app.route("/weather/", methods=['GET', 'POST'])
@@ -50,7 +49,7 @@ def weather():
             return render_template("error.html",
                                pages=page_link_dict,
                                current_page="Error",
-                               e=error_dict)
+                               e=error_dict, session=session)
         else:
             return redirect('/weather/')
     else:
@@ -58,7 +57,8 @@ def weather():
         return render_template("weather.html",
                                pages=page_link_dict,
                                current_page="Weather",
-                               weather_readings=weather_data)
+                               weather_readings=weather_data,
+                               session=session)
 
 
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
@@ -77,34 +77,33 @@ def login():
         if login_obj.log_in(username, password):
             session.permanent = True
             session['user'] = username
-            del page_link_dict['Login']
-            page_link_dict[username] = '/profile/'
             return redirect('/profile/')
         else:
             login_data['error'] = "Incorrect password. Make sure the account exists"
 
-    return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data)
+    return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data, session=session)
 
 
 @app.route('/signup/', methods=['GET', 'POST'])
 def signup():
+    signup_data = {}
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         if login_obj.sign_up(username, password):
             session['user'] = username
-            del page_link_dict['Login']
-            page_link_dict[username] = '/profile/'
             return redirect(url_for('profile'))
+        else:
+            signup_data['error'] = "That username has already been taken. Please choose another."
+            return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,
+                                   session=session)
     else:
-        return render_template('signup.html', pages=page_link_dict, current_page='Signup')
+        return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data, session=session)
 
 
 @app.route('/logout/')
 def logout():
     if 'user' in session:
-        del page_link_dict[session['user']]
-        page_link_dict['Login'] = '/login/'
         del session['user']
         return redirect(url_for('login'))
     else:
@@ -117,10 +116,11 @@ def profile():
         user_data = {'username': session['user']}
         return render_template('profile.html',
                                pages=page_link_dict,
-                               current_page=user_data['username'],
-                               user_data=user_data)
+                               current_page="Profile",
+                               user_data=user_data,
+                               session=session)
     else:
-        return render_template("login.html", pages=page_link_dict, current_page='Login')
+        return redirect(url_for('login'))
 
 
 @app.route("/polls/createpoll/", methods=['GET', 'POST'])
@@ -137,7 +137,7 @@ def create_poll():
 
 @app.route("/polls/")
 def polls():
-    return render_template('polls.html', pages=page_link_dict, current_page='Polls')
+    return render_template('polls.html', pages=page_link_dict, current_page='Polls', session=session)
 
 
 @app.route("/polls/vote/<int:id>/", methods = ['GET', 'POST'])
@@ -149,14 +149,14 @@ def vote_poll(id):
         return redirect("/polls/" + str(id) + "/")
     else:
         if id in polls_class.polls.keys():
-            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id))
+            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id), session=session)
         else:
             return redirect("/polls/")
 
         
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id))
+    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id), session=session)
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
@@ -175,6 +175,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    #app.run(debug=True)
+    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 

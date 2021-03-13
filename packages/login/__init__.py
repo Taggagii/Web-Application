@@ -12,13 +12,10 @@ class Login:
         self.db = db
         self.connection = None
         self.cursor = None
-        self.initialize_login_table()
+        #self.initialize_login_table()
 
         password = "pass"
         h = pbkdf2_sha256.hash(password)
-        print(h)
-        print(type(h))
-        print(len(h))
 
     def initialize_login_table(self):
         self.connect()
@@ -30,13 +27,11 @@ class Login:
 
     def log_in(self, username, password):
         self.connect()
-        print(username)
         self.cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
         user_req = self.cursor.fetchall()
         self.connection.close()
 
         if user_req:
-            print(user_req)
             return pbkdf2_sha256.verify(password, user_req[0][2])
         return False
 
@@ -50,8 +45,6 @@ class Login:
             return False
         else:
             pass_hash = pbkdf2_sha256.hash(password)
-            print(pass_hash)
-            print(len(pass_hash))
             self.cursor.execute(f"INSERT INTO users (username, pass_hash) VALUES ('{username}', '{pass_hash}')")
             self.connection.commit()
             self.connection.close

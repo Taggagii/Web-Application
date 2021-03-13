@@ -8,7 +8,6 @@
 {% block navbar %}
 <nav>
     <ul class="navbar">
-
     {% for page in pages %}
     <li>
         {% if page != current_page %}
@@ -18,7 +17,25 @@
         {% endif %}
     </li>
     {% endfor %}
+    <li>
+        {% if 'user' in session %}
 
+            {% if current_page == "Profile" %}
+            <a class="currentNav" href = "/profile/">{{ session['user'] }}</a>
+            {% else %}
+            <a href = "/profile/">{{ session['user'] }}</a>
+            {% endif %}
+
+        {% else %}
+
+            {% if current_page == "Login" %}
+            <a class="currentNav" href = "/login/">Login</a>
+            {% else %}
+             <a href = "/login/">Login</a>
+            {% endif %}
+
+        {% endif %}
+    </li>
     </ul>
 </nav>
 {% endblock %}
