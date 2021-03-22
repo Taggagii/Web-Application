@@ -42,10 +42,13 @@ class Weather:
         self.db = db_path
         self.initialize_weather_table()
 
-    def get_all_weather(self):
+    def get_all_weather(self, username=None):
         con = self.connect()
         cursor = con.cursor()
-        cursor.execute('SELECT * FROM weather')
+        if username:
+            cursor.execute('SELECT * FROM weather WHERE username = ?', (username,))
+        else:
+            cursor.execute('SELECT * FROM weather WHERE username IS NULL')
         weather_data_rows = cursor.fetchall()
         con.close()
         return weather_data_rows
@@ -58,7 +61,7 @@ class Weather:
             con = self.connect()
             cursor = con.cursor()
             if username:
-                cursor.execute('INSERT INTO weather (city, country, temperature, unit) VALUES (?, ?, ?, ?, ?)',
+                cursor.execute('INSERT INTO weather (city, country, temperature, unit, username) VALUES (?, ?, ?, ?, ?)',
                                (data['city'], data['country'], data['temperature'], data['unit'], username))
             else:
                 cursor.execute('INSERT INTO weather (city, country, temperature, unit) VALUES (?, ?, ?, ?)',

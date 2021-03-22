@@ -44,7 +44,13 @@ def pseudocode():
 @app.route("/weather/", methods=['GET', 'POST'])
 def weather():
     if request.method == 'POST':
-        if error := weather_obj.add_weather(request.form['location']):
+        error = None
+        if 'user' in session:
+            error = weather_obj.add_weather(request.form['location'], username=session['user'])
+        else:
+            error = weather_obj.add_weather(request.form['location'])
+
+        if error:
             error_dict = {'source': '/weather/', 'error': error}
             return render_template("error.html",
                                pages=page_link_dict,
@@ -52,8 +58,12 @@ def weather():
                                e=error_dict, session=session)
         else:
             return redirect('/weather/')
+    # Weather data display
     else:
-        weather_data = weather_obj.get_all_weather()
+        if 'user' in session:
+            weather_data = weather_obj.get_all_weather(session['user'])
+        else:
+            weather_data = weather_obj.get_all_weather()
         return render_template("weather.html",
                                pages=page_link_dict,
                                current_page="Weather",
@@ -175,6 +185,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-   # app.run(debug=True)
+    # app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 
