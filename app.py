@@ -22,23 +22,24 @@ page_link_dict = {
         "Polls": "/polls/"
                   }
 
+song = "josh_1.mid"
 
 # All endpoint returns should follow the format return render_template("<current page>.html", pages=page_link_dict,
 # current_page="<current page>" <page data>=dictionary_of_parameters) or a redirect
 @app.route("/")
 @app.route("/home/")
 def index():
-    return render_template("home.html", pages=page_link_dict, current_page="Home", session=session)
+    return render_template("home.html", pages=page_link_dict, current_page="Home",  song = song, session=session)
 
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', pages=page_link_dict, current_page="About", session=session)
+    return render_template('about.html', pages=page_link_dict, current_page="About",  song = song, session=session)
 
 
 @app.route("/pseudocode/")
 def pseudocode():
-    return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode", session=session)
+    return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode",  song = song, session=session)
 
 
 @app.route("/weather/", methods=['GET', 'POST'])
@@ -55,7 +56,7 @@ def weather():
             return render_template("error.html",
                                pages=page_link_dict,
                                current_page="Error",
-                               e=error_dict, session=session)
+                               e=error_dict,  song = song, session=session)
         else:
             return redirect('/weather/')
     # Weather data display
@@ -68,7 +69,7 @@ def weather():
                                pages=page_link_dict,
                                current_page="Weather",
                                weather_readings=weather_data,
-                               session=session)
+                                song = song, session=session)
 
 
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
@@ -91,7 +92,7 @@ def login():
         else:
             login_data['error'] = "Incorrect password. Make sure the account exists"
 
-    return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data, session=session)
+    return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data,  song = song, session=session)
 
 
 @app.route('/signup/', methods=['GET', 'POST'])
@@ -106,9 +107,9 @@ def signup():
         else:
             signup_data['error'] = "That username has already been taken. Please choose another."
             return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,
-                                   session=session)
+                                    song = song, session=session)
     else:
-        return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data, session=session)
+        return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,  song = song, session=session)
 
 
 @app.route('/logout/')
@@ -128,7 +129,7 @@ def profile():
                                pages=page_link_dict,
                                current_page="Profile",
                                user_data=user_data,
-                               session=session)
+                                song = song, session=session)
     else:
         return redirect(url_for('login'))
 
@@ -147,7 +148,7 @@ def create_poll():
 
 @app.route("/polls/")
 def polls():
-    return render_template('polls.html', pages=page_link_dict, current_page='Polls', session=session)
+    return render_template('polls.html', pages=page_link_dict, current_page='Polls',  song = song, session=session)
 
 
 @app.route("/polls/vote/<int:id>/", methods = ['GET', 'POST'])
@@ -159,14 +160,14 @@ def vote_poll(id):
         return redirect("/polls/" + str(id) + "/")
     else:
         if id in polls_class.polls.keys():
-            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id), session=session)
+            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id),  song = song, session=session)
         else:
             return redirect("/polls/")
 
         
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id), session=session)
+    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id),  song = song, session=session)
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
