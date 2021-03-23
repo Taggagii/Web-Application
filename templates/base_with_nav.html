@@ -8,7 +8,7 @@
 
 {% block navbar %}
 
-<audio autoplay>
+<audio autoplay id = "audioPlayer">
        <source src = "/static/audio/{{ song }}" type = "audio/mp3">
 </audio>
 <nav>
@@ -43,5 +43,10 @@
     </li>
     </ul>
 </nav>
+{% endblock %}
+
+{% block script %}
+var x = document.getElementById("audioPlayer");
+x.volume = 0.01
 {% endblock %}
 

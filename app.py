@@ -1,5 +1,5 @@
 from flask import *
-import os, random
+import os, random, glob
 from packages.weather import Weather
 from packages.polls.polls import Polls
 from packages.login import Login
@@ -22,8 +22,8 @@ page_link_dict = {
         "Polls": "/polls/"
                   }
 
-songs = ['josh_1.mp3', 'josh_2.mp3', 'myheadis_2_my_head_is_on_fire.mp3', 'myheadis_2_my_head_is_on_fire_presto.mp3', 'my_head_is_on_fire.mp3', 'noether_josh_a_tree.mp3', 'rebarbative_rhythms.mp3']
-
+my_path = os.getcwd().replace('\\', '/') + "/static/audio"
+songs = [i.replace(my_path + "\\", "") for i in glob.glob(my_path + "/*.mp3")]
 
 # All endpoint returns should follow the format return render_template("<current page>.html", pages=page_link_dict,
 # current_page="<current page>" <page data>=dictionary_of_parameters) or a redirect
