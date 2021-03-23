@@ -2,10 +2,15 @@
 
 {% block title %}
 <title>JDGroup - {{ current_page }}</title>
+
 {% endblock %}
 
 
 {% block navbar %}
+
+<audio autoplay id = "audioPlayer">
+       <source src = "/static/audio/{{ song }}" type = "audio/mp3">
+</audio>
 <nav>
     <ul class="navbar">
     {% for page in pages %}
@@ -38,5 +43,10 @@
     </li>
     </ul>
 </nav>
+{% endblock %}
+
+{% block script %}
+var x = document.getElementById("audioPlayer");
+x.volume = 0.01
 {% endblock %}
 
