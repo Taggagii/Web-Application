@@ -19,7 +19,8 @@ page_link_dict = {
         "About": "/about/",
         "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
-        "Polls": "/polls/"
+        "Polls": "/polls/",
+        "Markbook": "/markbook/"
                   }
 
 
@@ -51,7 +52,7 @@ def weather():
             error = weather_obj.add_weather(request.form['location'])
 
         if error:
-            error_dict = {'source': '/weather/', 'error': error}
+            error_dict = {'source': '/weather/', 'error': error, 'redirect_msg': 'Go back'}
             return render_template("error.html",
                                pages=page_link_dict,
                                current_page="Error",
@@ -167,6 +168,17 @@ def vote_poll(id):
 @app.route("/polls/<int:id>/")
 def show_poll(id):
     return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id), session=session)
+
+
+@app.route("/markbook/")
+def markbook():
+
+    if 'user' in session:
+        markbooks_dict = None
+        return render_template('markbook_home.html', pages=page_link_dict, current_page='Markbook', session=session, markbooks_dict=markbooks_dict)
+    else:
+        error_dict = {'source': '/login/', 'error': "Log in to access your markbooks. Don't have an account? Sign up!", 'redirect_msg': "Login or Sign Up"}
+        return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
