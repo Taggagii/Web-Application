@@ -3,6 +3,7 @@ import os
 from packages.weather import Weather
 from packages.polls.polls import Polls
 from packages.login import Login
+from packages.markbook import Markbook
 from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = "1234"
@@ -13,6 +14,7 @@ db_file = 'site.db'
 weather_obj = Weather(db_file)
 polls_class = Polls(db_file)
 login_obj = Login(db_file)
+markbook_obj = Markbook(db_file)
 
 page_link_dict = {
         "Home": "/home/",
@@ -172,13 +174,21 @@ def show_poll(id):
 
 @app.route("/markbook/")
 def markbook():
-
     if 'user' in session:
         markbooks_dict = None
         return render_template('markbook_home.html', pages=page_link_dict, current_page='Markbook', session=session, markbooks_dict=markbooks_dict)
     else:
         error_dict = {'source': '/login/', 'error': "Log in to access your markbooks. Don't have an account? Sign up!", 'redirect_msg': "Login or Sign Up"}
         return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
+
+
+@app.route('/markbook/new/', methods=['GET', 'POST'])
+def new_class():
+    if request.method == 'POST':
+        pass
+        redirect(url_for('markbook'))
+    else:
+        redirect(url_for('markbook'))
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94

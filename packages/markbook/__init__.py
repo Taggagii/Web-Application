@@ -17,3 +17,7 @@ class Markbook:
     def __init__(self, db_path):
         self.db = db_path
         self.initialize_markbook_tables()
+
+    def new_class(self):
+        con = self.connect()
+        cursor = con.cursor()
