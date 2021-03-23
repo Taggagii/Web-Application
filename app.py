@@ -169,26 +169,83 @@ def vote_poll(id):
         
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id), session=session)
+    return render_template("show_poll.html",
+                           pages=page_link_dict,
+                           current_page="Polls",
+                           polls_dict=polls_class.get_poll(id),
+                           session=session)
 
 
-@app.route("/markbook/")
+@app.route("/markbook/", methods=['GET', 'POST'])
 def markbook():
     if 'user' in session:
-        markbooks_dict = None
-        return render_template('markbook_home.html', pages=page_link_dict, current_page='Markbook', session=session, markbooks_dict=markbooks_dict)
+
+        if request.method == 'POST':
+            class_name = request.form['class_name']
+            return redirect(url_for('new_class', name=class_name))
+
+        elif request.method == 'GET':
+            markbooks_dict = markbook_obj.get_user_classes(session['user'])
+            return render_template('markbook_home.html',
+                                   pages=page_link_dict,
+                                   current_page="Markbook",
+                                   session=session,
+                                   markbooks_dict=markbooks_dict)
+
     else:
-        error_dict = {'source': '/login/', 'error': "Log in to access your markbooks. Don't have an account? Sign up!", 'redirect_msg': "Login or Sign Up"}
-        return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
+        return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
 
 
-@app.route('/markbook/new/', methods=['GET', 'POST'])
-def new_class():
-    if request.method == 'POST':
-        pass
-        redirect(url_for('markbook'))
+@app.route('/markbook/new/<string:name>/', methods=['GET', 'POST'])
+def new_class(name):
+    if 'user' in session:
+        if request.method == 'POST':
+            grade = request.form['grade']
+            if isinstance(grade, int):
+                if not(12 < grade or grade < 9):
+                    return markbook_error_switch(4)
+            else:
+                return markbook_error_switch(4)
+            code = request.form['code']
+            start = request.form['start']
+            end = request.form['end']
+            markbook_obj.add_class(name, session['user'])
+
+        else:
+            class_edit_dict = {'name': name}
+            return render_template('markbook_edit_class.html',
+                            pages=page_link_dict,
+                            current_page="Markbook",
+                            class_edit_dict=class_edit_dict,
+                            session=session)
     else:
-        redirect(url_for('markbook'))
+        return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
+
+
+def markbook_error_switch(code):
+    error = ""
+    if code == 1:
+        error = "Not a valid course code"
+    elif code == 2:
+        error = "Not a valid start date"
+    elif code == 3:
+        error = "Not a valid end date"
+    elif code == 4:
+        error = "Not a valid grade"
+    markbooks_dict = {'error': error}
+    return render_template('markbook_home.html',
+                           pages=page_link_dict,
+                           current_page='Markbook',
+                           session=session,
+                           markbooks_dict=markbooks_dict)
+
+
+def not_logged_in(error):
+    error_dict = {'source': '/login/',
+                  'error': error,
+                  'redirect_msg': "Login or Sign Up"}
+    return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
+
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94

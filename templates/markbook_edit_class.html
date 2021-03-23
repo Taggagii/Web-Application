@@ -1,0 +1,23 @@
+{% extends 'base_with_nav.html' %}
+
+{% block body %}
+
+<div class="backingBox">
+<form action="/markbook/new/{{ class_edit_dict['name'] }}" method="post">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value="{{ class_edit_dict['name'] }}">
+    <label for="code">Course Code</label>
+    <input type="text" id="code" name="code">
+    <label for="grade">Grade</label>
+    <input type="text" id="grade" name="grade">
+    <label for="start">Starting Date</label>
+    <input type="date" id="start" name="start">
+    <label for="end">Ending Date</label>
+    <input type="date" id="end" name="end">
+</form>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+.idea
+.pycache
+.gitignore
+__pychache__
+*.db

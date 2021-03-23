@@ -7,8 +7,11 @@
 
     </table>
 
-    <form action="/markbook/new/" method="post">
-        <input type="text" id="class_name">
+    <form action="/markbook/" method="post">
+        <input type="text" id="class_name" name="class_name">
+        {% if markbooks_dict['error'] %}
+        <p style="color: red;">{{ markbooks_dict['error'] }}</p>
+        {% endif %}
         <input type="submit" value="New Class">
     </form>
 </div>
