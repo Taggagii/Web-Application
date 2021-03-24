@@ -6,5 +6,24 @@
     <h1>{{ user_data['username'] }}'s Profile!</h1>
     <h3><a href="/logout/">Log Out</a></h3>
 
+
+    <div class="backingBox">
+        <h3>Change Password</h3>
+        <form class="login" method="post" action="/change/">
+            <label for="username">Username</label>
+            <input name="username" id="username" type="text" value="{{ user_data['username'] }}"><br>
+            <label for="password">Password</label>
+            <input name="password" id="password" type="password"><br>
+            <label for="password">Reenter Password</label>
+            <input name="reenter" id="reenter" type="password"><br>
+            <label for="password">New Password</label>
+            <input name="new_password" id="new_password" type="password"><br>
+            {% if user_data['error'] %}
+            <p>{{ user_data['error'] }}</p>
+            {% endif %}
+            <input name="change_password" type="submit" title="Change Password">
+        </form>
+    </div>
+
 </div>
 {% endblock %}

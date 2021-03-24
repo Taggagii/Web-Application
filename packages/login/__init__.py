@@ -12,7 +12,7 @@ class Login:
         self.db = db
         self.connection = None
         self.cursor = None
-        #self.initialize_login_table()
+        self.initialize_login_table()
 
         password = "pass"
         h = pbkdf2_sha256.hash(password)
@@ -41,14 +41,22 @@ class Login:
         user_req = self.cursor.fetchall()
 
         if user_req:
-            self.connection.close
+            self.connection.close()
             return False
         else:
             pass_hash = pbkdf2_sha256.hash(password)
             self.cursor.execute(f"INSERT INTO users (username, pass_hash) VALUES ('{username}', '{pass_hash}')")
             self.connection.commit()
-            self.connection.close
+            self.connection.close()
             return True
+
+    def change_password(self, username, new_password):
+        self.connect()
+        new_pass_hash = pbkdf2_sha256.hash(new_password)
+        self.cursor.execute(f"UPDATE users SET pass_hash='{new_pass_hash}' WHERE username='{username}'")
+        self.connection.commit()
+        self.connection.close()
+        return True
 
 
 

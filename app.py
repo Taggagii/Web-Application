@@ -104,11 +104,14 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if login_obj.sign_up(username, password):
-            session['user'] = username
-            return redirect(url_for('profile'))
+        if password != "":
+            if login_obj.sign_up(username, password):
+                session['user'] = username
+                return redirect(url_for('profile'))
+            else:
+                signup_data['error'] = "That username has already been taken. Please choose another."
         else:
-            signup_data['error'] = "That username has already been taken. Please choose another."
+            signup_data['error'] = "You must enter a password."
             return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,
                                     song = random.choices(songs)[0], session=session)
     else:
@@ -122,6 +125,35 @@ def logout():
         return redirect(url_for('login'))
     else:
         return redirect(url_for('home'))
+
+
+@app.route('/change/', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST' and 'user' in session:
+        user_data = {'username': session['user']}
+        username = request.form['username']
+        password = request.form['password']
+        password2 = request.form['reenter']
+        new_password = request.form['new_password']
+        if new_password != "":
+            if password == password2:
+                if login_obj.log_in(username, password):
+                    login_obj.change_password(username, new_password)
+                    user_data['error'] = "Password successfully changed!"
+                else:
+                    user_data['error'] = "Incorrect password Try again"
+            else:
+                user_data['error'] = "Make sure your current passwords match"
+        else:
+            user_data['error'] = "You must enter a new password"
+        return render_template('profile.html',
+                        pages=page_link_dict,
+                        current_page="Profile",
+                        user_data=user_data,
+                        song=random.choices(songs)[0], session=session)
+    else:
+        return redirect(url_for('profile'))
+
 
 
 @app.route('/profile/')
@@ -208,6 +240,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    #app.run(debug=True)
+    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 
