@@ -5,6 +5,7 @@ from packages.polls.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
 from datetime import timedelta
+# Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
 app = Flask(__name__)
 app.secret_key = "1234"
 app.permanent_session_lifetime = timedelta(minutes=10)
@@ -16,6 +17,14 @@ polls_class = Polls(db_file)
 login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
 
+'''
+Everything the code does operates through an instance of the Flask class. We followed this format for our own packages,
+which perfrom all their operations on their respective objects, linked to the database file, rather than having all
+functions live in the same main file, app.py. app.py just talks to fucntions in other objects and links the results
+together with the HTML and CSS.
+'''
+
+# This stores the page names and links for our navigation bar.
 page_link_dict = {
         "Home": "/home/",
         "About": "/about/",
@@ -27,8 +36,7 @@ page_link_dict = {
 my_path = os.getcwd().replace('\\', '/') + "/static/audio"
 songs = [i.replace(my_path + "\\", "") for i in glob.glob(my_path + "/*.mp3")]
 
-# All endpoint returns should follow the format return render_template("<current page>.html", pages=page_link_dict,
-# current_page="<current page>" <page data>=dictionary_of_parameters) or a redirect
+# Flask uses decorators,
 @app.route("/")
 @app.route("/home/")
 def index():
