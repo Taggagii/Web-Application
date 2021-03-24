@@ -19,8 +19,8 @@ markbook_obj = Markbook(db_file)
 
 '''
 Everything the code does operates through an instance of the Flask class. We followed this format for our own packages,
-which perfrom all their operations on their respective objects, linked to the database file, rather than having all
-functions live in the same main file, app.py. app.py just talks to fucntions in other objects and links the results
+which perfrom all their operations on their respective objects and are linked to the database file, rather than having all
+functions live in the same app file. app.py just talks to fucntions in other objects and links the results
 together with the HTML and CSS.
 '''
 
@@ -36,10 +36,17 @@ page_link_dict = {
 my_path = os.getcwd().replace('\\', '/') + "/static/audio"
 songs = [i.replace(my_path + "\\", "") for i in glob.glob(my_path + "/*.mp3")]
 
-# Flask uses decorators,
+'''
+Flask uses decorators, a special Python tool for linking functions together, in order to redirect requests to our custom
+server code. "Endpoints" (app.route) are the paths that tell the server what the client wants and thus, what function to
+run. A client will specify where on the site they want to go, and if that endpoint is assigned to a function, that
+function will tell Flask what information to render back to the client. 
+'''
 @app.route("/")
 @app.route("/home/")
 def index():
+# Flask's render_template function takes in 1+ arguments, the first being an HTML file in a directory named 'templates'
+# that tells it what page to render, and the rest being variables that Jinja can access when redering the final page
     return render_template("home.html", pages=page_link_dict, current_page="Home",  song = random.choices(songs)[0], session=session)
 
 
@@ -55,13 +62,29 @@ def pseudocode():
 
 @app.route("/weather/", methods=['GET', 'POST'])
 def weather():
+# Much like with databases and SQL, HHTP methods distinguish different types of requests to a page. The standard request
+# is a GET request, which is used to just display a page and its information. When we want to send data back to the
+# server, we use a post request
     if request.method == 'POST':
         error = None
+
+        '''session is a special dictionary object that is generated behind the scenes by Flask. What makes session
+        special is that it is unique for every individual connection to the site (Flask handles the generation and 
+        storage of a cookie on each browser that allows it to distinguish this). The value for key user is the user 
+        account currently signed in, null if no user is signed in.'''
+
         if 'user' in session:
+
+            '''All information from the page that sends the request exists in the request object, including any user-
+            inputted data. Here we access the element by its name 'location', that tells us where the user wants their 
+            weather reading for. That is passed to the weather object's add function'''
+
             error = weather_obj.add_weather(request.form['location'], username=session['user'])
         else:
             error = weather_obj.add_weather(request.form['location'])
 
+        # if sees "None" as False, and the function will return that by default. If there is an error, the function
+        # throws that back as text instead, and the function spits it back to the user
         if error:
             error_dict = {'source': '/weather/', 'error': error, 'redirect_msg': 'Go back'}
             return render_template("error.html",
@@ -69,9 +92,15 @@ def weather():
                                current_page="Error",
                                e=error_dict,  song = random.choices(songs)[0], session=session)
         else:
+            # redirect forwards a (GET) request through to another endpoint, rather than rendering its own page
             return redirect('/weather/')
-    # Weather data display
+
     else:
+
+        '''When the function recieves a GET request, it asks the database to return all weather entires corresponding to 
+        the current user (or to no user, if nobody is logged in). These are passed to the HTML page as it is rendered,
+        and Jinja loops through each entry and displays it.'''
+
         if 'user' in session:
             weather_data = weather_obj.get_all_weather(session['user'])
         else:
@@ -82,13 +111,16 @@ def weather():
                                weather_readings=weather_data,
                                 song = random.choices(songs)[0], session=session)
 
+'''When each weather entry is generated, it creates a static link to this deletion endpoint. Using the <> syntax, it is 
+possible to pass an endpoint function data in the endpoint itself, rather than just data from the page sending the
+request. Each entry's deletion link therefore deletes itself in the database.'''
 
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
 def delete_weather(reading_id):
     weather_obj.delete_weather(reading_id)
     return redirect('/weather/')
 
-
+# Gets user input from the sending form and attempts to log the user in
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
     login_data = {}
@@ -106,6 +138,7 @@ def login():
     return render_template("login.html", pages=page_link_dict, current_page='Login', login_data=login_data,  song = random.choices(songs)[0], session=session)
 
 
+# Takes data from the sending form and attempts to add a new user account. If successful, also logs the user in
 @app.route('/signup/', methods=['GET', 'POST'])
 def signup():
     signup_data = {}
@@ -125,7 +158,7 @@ def signup():
     else:
         return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,  song = random.choices(songs)[0], session=session)
 
-
+# Deletes the current user from the session object, logging them out of the site
 @app.route('/logout/')
 def logout():
     if 'user' in session:
@@ -134,7 +167,7 @@ def logout():
     else:
         return redirect(url_for('home'))
 
-
+# Verifies the current username and password, then updates the password in the database with the new one
 @app.route('/change/', methods=['GET', 'POST'])
 def change_password():
     if request.method == 'POST' and 'user' in session:
