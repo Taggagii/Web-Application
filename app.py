@@ -19,7 +19,6 @@ markbook_obj = Markbook(db_file)
 page_link_dict = {
         "Home": "/home/",
         "About": "/about/",
-        "Pseudocode": "/pseudocode/",
         "Weather": "/weather/",
         "Polls": "/polls/",
         "Markbook": "/markbook/"
