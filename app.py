@@ -268,6 +268,11 @@ def markbook_error_switch(code):
                            markbooks_dict=markbooks_dict)
 
 
+def not_logged_in(error):
+    error_dict = {'source': '/login/',
+                  'error': error,
+                  'redirect_msg': "Login or Sign Up"}
+    return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
 
 
 @app.route('/markbook/new/', methods=['GET', 'POST'])
