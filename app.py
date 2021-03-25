@@ -245,6 +245,7 @@ def show_poll(id):
     return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id),  song = random.choices(songs)[0], session=session)
 
 
+@app.route('/markbook/', methods=['GET', 'POST'])
 def markbook():
     if 'user' in session:
 
