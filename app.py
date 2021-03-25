@@ -4,7 +4,7 @@ from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
-from datetime import timedelta, date
+from datetime import timedelta
 # Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
 app = Flask(__name__)
 app.secret_key = "1234"
@@ -158,6 +158,7 @@ def signup():
     else:
         return render_template('signup.html', pages=page_link_dict, current_page='Signup', signup_data=signup_data,  song = random.choices(songs)[0], session=session)
 
+
 # Deletes the current user from the session object, logging them out of the site
 @app.route('/logout/')
 def logout():
@@ -166,6 +167,7 @@ def logout():
         return redirect(url_for('login'))
     else:
         return redirect(url_for('home'))
+
 
 # Verifies the current username and password, then updates the password in the database with the new one
 @app.route('/change/', methods=['GET', 'POST'])
@@ -265,48 +267,40 @@ def markbook():
         return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
 
 
-@app.route('/markbook/new/<string:name>/', methods=['GET', 'POST'])
-def new_class(name):
+@app.route('/markbook/new/<string:class_name>/', methods=['GET', 'POST'])
+def new_class(class_name):
     if 'user' in session:
         if request.method == 'POST':
-            grade = request.form['grade']
-            if isinstance(grade, int):
-                if not(12 < grade or grade < 9):
-                    return markbook_error_switch(4)
-            else:
-                return markbook_error_switch(4)
+            class_name = request.form['class_name']
             code = request.form['code']
-            start = date(request.form['start'])
-            end = date(request.form['end'])
-            markbook_obj.add_class(name, session['user'])
+            grade = request.form['grade']
+            start = request.form['start']
+            end = request.form['end']
+
+            error = markbook_obj.add_class(class_name, session['user'], code, grade, start, end)
+            if error:
+                class_edit_dict = {'error': error}
+            else:
+                return redirect(url_for('markbook'))
 
         else:
-            class_edit_dict = {'name': name}
-            return render_template('markbook_edit_class.html',
-                            pages=page_link_dict,
-                            current_page="Markbook",
-                            class_edit_dict=class_edit_dict,
-                            session=session)
+            class_edit_dict = {'name': class_name}
+
+        return render_template('markbook_edit_class.html',
+                        pages=page_link_dict,
+                        current_page="Markbook",
+                        class_edit_dict=class_edit_dict,
+                        session=session)
     else:
-        return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
+        return not_logged_in("Log in to create a markbook. Don't have an account? Sign up!")
 
 
-def markbook_error_switch(code):
-    error = ""
-    if code == 1:
-        error = "Not a valid course code"
-    elif code == 2:
-        error = "Not a valid start date"
-    elif code == 3:
-        error = "Not a valid end date"
-    elif code == 4:
-        error = "Not a valid grade"
-    markbooks_dict = {'error': error}
+    '''markbooks_dict = {'error': error}
     return render_template('markbook_home.html',
                            pages=page_link_dict,
                            current_page='Markbook',
                            session=session,
-                           markbooks_dict=markbooks_dict)
+                           markbooks_dict=markbooks_dict)'''
 
 
 def not_logged_in(error):

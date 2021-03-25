@@ -1,0 +1,33 @@
+{% extends 'base_with_nav.html' %}
+
+{% block body %}
+
+<div class="backingBox">
+    <table>
+
+    </table>
+
+    <form action="/markbook/new/" method="post">
+        <label for="class_name">Class Name</label>
+        <input type="text" id="class_name" name="class_name" value="{{ class_edit_dict['class_name'] }}">
+
+        <label for="grade">Grade</label>
+        <input type="number" id="grade" name="grade">
+
+        <label for="code">Course Code</label>
+        <input type="text" id="code" name="code" content="XXX#X#" maxlength="6" size="6">
+
+        <label for="start">Starting Date</label>
+        <input type="date" id="start" name="start">
+
+        <label for="end">Ending Date</label>
+        <input type="date" id="end" name="end">
+
+        <input type="submit" value="Create Class">
+    </form>
+</div>
+
+
+
+
+{% endblock %}
