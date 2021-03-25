@@ -1,4 +1,10 @@
-# Flask App Test
+# JDGroup
+
+### Overview
+This is the GitHub repository containing all of the code for 
+
+
+
 
 This is a first test of a web application using Flask.
 We've currently got a weather app and poll app essentially complete.

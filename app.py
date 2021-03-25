@@ -1,7 +1,7 @@
 from flask import *
 import os, random, glob
 from packages.weather import Weather
-from packages.polls.polls import Polls
+from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
 from datetime import timedelta
@@ -13,7 +13,7 @@ app.permanent_session_lifetime = timedelta(minutes=10)
 db_file = 'site.db'
 
 weather_obj = Weather(db_file)
-polls_class = Polls(db_file)
+polls_obj = Polls(db_file)
 login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
 
@@ -214,8 +214,8 @@ def create_poll():
     if request.method == "POST":
         poll_question = request.form['pollQuestion']
         poll_choices = request.form.getlist('pollChoices')[:-1]
-        polls_class.add_poll(poll_question, poll_choices)
-        id = max(polls_class.polls.keys())
+        polls_obj.add_poll(poll_question, poll_choices)
+        id = max(polls_obj.polls.keys())
         return redirect("/polls/vote/" + str(id) + "/")
     else:
         return render_template("createpoll.html")
@@ -231,18 +231,18 @@ def vote_poll(id):
     if request.method == "POST":
         if "choices" in request.form:
             choice = request.form["choices"]
-            polls_class.vote(id, choice)
+            polls_obj.vote(id, choice)
         return redirect("/polls/" + str(id) + "/")
     else:
-        if id in polls_class.polls.keys():
-            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_class.get_poll(id),  song = random.choices(songs)[0], session=session)
+        if id in polls_obj.polls.keys():
+            return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
         else:
             return redirect("/polls/")
 
         
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_class.get_poll(id),  song = random.choices(songs)[0], session=session)
+    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
 
 
 def markbook():
