@@ -1,11 +1,11 @@
-from flask import *
+from flask import Flask, render_template, request, session, redirect, url_for
 import os, random, glob
 from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
 from datetime import timedelta
-# Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
+# Pull all necessary packages from t he pipenv. Packages in the "packages" directory were written by us and exist locally
 app = Flask(__name__)
 app.secret_key = "1234"
 app.permanent_session_lifetime = timedelta(minutes=10)
@@ -109,7 +109,7 @@ def weather():
                                pages=page_link_dict,
                                current_page="Weather",
                                weather_readings=weather_data,
-                                song = random.choices(songs)[0], session=session)
+                               song = random.choices(songs)[0], session=session)
 
 '''When each weather entry is generated, it creates a static link to this deletion endpoint. Using the <> syntax, it is 
 possible to pass an endpoint function data in the endpoint itself, rather than just data from the page sending the
