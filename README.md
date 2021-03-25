@@ -1,6 +1,8 @@
 # JDGroup
 
-<image src = "https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fsunrise&psig=AOvVaw2G77LxyuybtJbko8XJ8Daa&ust=1616765858774000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCICotafIy-8CFQAAAAAdAAAAABAD">
+<a href = "http://38.29.38.139:25565" style = "cursor:pointer">
+    <image alt = "Image of the sun" src = "https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8c3VucmlzZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80">
+</a>
 
 ### Overview
 This is the GitHub repository containing all the code for [our website](http://38.29.38.139:25565) 
