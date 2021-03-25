@@ -3,18 +3,20 @@ import sqlite3 as sql
 
 class Markbook:
     def connect(self):
-        return sql.connect(self.db)
+        self.connection = sql.connect(self.db)
+        self.cursor = self.connection.cursor()
 
     def initialize_markbook_tables(self):
-        con = self.connect()
-        cursor = con.cursor()
+        self.connect()
         with open('markbook.sql', 'r') as schema:
             script = schema.read()
-            cursor.executescript(script)
-        con.commit()
-        con.close()
+            self.cursor.executescript(script)
+        self.connection.commit()
+        self.connection.close()
 
     def __init__(self, db_path):
+        self.connection = None
+        self.cursor = None
         self.db = db_path
         self.initialize_markbook_tables()
 
@@ -32,12 +34,11 @@ class Markbook:
             return None'''
 
     def get_user_classes(self, username):
-        con = self.connect()
-        cursor = con.cursor()
-        cursor.execute('SELECT * FROM classes WHERE teacher = ?', (username,))
-        data = cursor.fetchall()
-        con.commit()
-        con.close()
+        self.connect()
+        self.cursor.execute('SELECT * FROM classes WHERE teacher = ?', (username,))
+        data = self.cursor.fetchall()
+        self.connection.commit()
+        self.connection.close()
         return data
 
     def add_class(self, name, user, code, grade, start, end):
@@ -45,6 +46,5 @@ class Markbook:
         cursor = con.cursor()
         cursor.execute('INSERT INTO classes (name, teacher, code, grade, start, end) VALUES (?, ?, ?, ?, ?, ?)',
                        (name, user, code, grade, start, end))
-        data = cursor.fetchall()
         con.commit()
         con.close()
