@@ -1,7 +1,7 @@
 # JDGroup
 
 <a href = "http://38.29.38.139:25565" target = "_blank" style = "cursor:pointer">
-    <video src = "https://github.com/Taggagii/Web-Application/blob/master/static/readme/Josh%20Screaming.mp4" controls>
+    <video src = "https://github.com/Taggagii/Web-Application/blob/master/static/readme/Josh%20Screaming.mp4" controls></video>
 </a>
 
 ### Overview
