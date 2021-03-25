@@ -275,15 +275,6 @@ def not_logged_in(error):
     return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
 
 
-@app.route('/markbook/new/', methods=['GET', 'POST'])
-def new_class():
-    if request.method == 'POST':
-        pass
-        redirect(url_for('markbook'))
-    else:
-        redirect(url_for('markbook'))
-
-
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
 @app.context_processor
 def override_url_for():
