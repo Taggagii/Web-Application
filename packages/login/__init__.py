@@ -45,8 +45,9 @@ class Login:
             return False
         else:
             '''Storing passwords as plain text in a database is not secure. Anyone with access (authorized or otherwise)
-            would be able to see your password. A hashing algorithm transforms its input into a seemingly random,
-            fixed-length string. What's powerful about this is that it's computationally infeasible to reverse the hash
+            would be able to see your password. A cryptographic hashing algorithm transforms its input into a seemingly 
+            random, fixed-length string. What's powerful about this is that it's computationally infeasible to reverse 
+            the hash
             back into the original input, but the same input will produce the same (at least, the computer can tell it's 
             the same) hash. This can be used to verify that the password a user logs in with is the correct one, without
             ever saving the password itself.'''
