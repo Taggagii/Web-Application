@@ -333,6 +333,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    app.run(debug=True)
+    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+   # app.run(debug=True)
 
