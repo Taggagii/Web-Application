@@ -1,7 +1,7 @@
 # JDGroup
 
 <a href = "http://38.29.38.139:25565" target = "_blank" style = "cursor:pointer">
-        <image src = "https://w7.pngwing.com/pngs/146/48/png-transparent-earth-desktop-high-definition-television-1080p-typography-globe-atmosphere-computer-wallpaper.png">
+        ![sample](https://w7.pngwing.com/pngs/146/48/png-transparent-earth-desktop-high-definition-television-1080p-typography-globe-atmosphere-computer-wallpaper.png)
 </a>
 
 ### Overview
