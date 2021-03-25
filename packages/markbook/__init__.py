@@ -42,9 +42,8 @@ class Markbook:
         return data
 
     def add_class(self, name, user, code, grade, start, end):
-        con = self.connect()
-        cursor = con.cursor()
-        cursor.execute('INSERT INTO classes (name, teacher, code, grade, start, end) VALUES (?, ?, ?, ?, ?, ?)',
+        self.connect()
+        self.cursor.execute('INSERT INTO classes (name, teacher, code, grade, start, end) VALUES (?, ?, ?, ?, ?, ?)',
                        (name, user, code, grade, start, end))
-        con.commit()
-        con.close()
+        self.connection.commit()
+        self.connection.close()

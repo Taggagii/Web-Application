@@ -4,7 +4,7 @@ from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
-from datetime import timedelta
+from datetime import timedelta, date
 # Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
 app = Flask(__name__)
 app.secret_key = "1234"
@@ -276,8 +276,8 @@ def new_class(name):
             else:
                 return markbook_error_switch(4)
             code = request.form['code']
-            start = request.form['start']
-            end = request.form['end']
+            start = date(request.form['start'])
+            end = date(request.form['end'])
             markbook_obj.add_class(name, session['user'])
 
         else:
@@ -332,6 +332,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    #app.run(debug=True)
+    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 
