@@ -1,7 +1,7 @@
 # JDGroup
 
 <a href = "http://38.29.38.139:25565" target = "_blank" style = "cursor:pointer">
-    <image alt = "/static/readme/Josh's Face.jpg">
+    <image alt = "picture" src = "https://github.com/Taggagii/Web-Application/blob/master/static/readme/Josh's%20Face.jpg">
 </a>
 
 ### Overview
