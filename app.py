@@ -51,8 +51,7 @@ def index():
 
 @app.route("/ip/")
 def finding_ip():
-    print(request.remote_addr)
-    return render_template("ip.html", ip = "0.0.0.0")
+    return render_template("ip.html", ip = request.remote_addr)
 
 @app.route('/about/')
 def about():
