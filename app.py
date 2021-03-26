@@ -253,21 +253,22 @@ def markbook():
 
         if request.method == 'POST':
             class_name = request.form['class_name']
-            return redirect(url_for('new_class', name=class_name))
+            return redirect(url_for('new_class', class_name=class_name))
 
         elif request.method == 'GET':
-            markbooks_dict = markbook_obj.get_user_classes(session['user'])
+            markbooks_dict = {'data': markbook_obj.get_user_classes(session['user'])}
             return render_template('markbook_home.html',
                                    pages=page_link_dict,
                                    current_page="Markbook",
                                    session=session,
-                                   markbooks_dict=markbooks_dict)
+                                   markbooks_dict=markbooks_dict,
+                                   song=random.choices(songs)[0])
 
     else:
         return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
 
 
-@app.route('/markbook/new/<string:class_name>/', methods=['GET', 'POST'])
+@app.route('/markbook/create/<string:class_name>', methods=['GET', 'POST'])
 def new_class(class_name):
     if 'user' in session:
         if request.method == 'POST':
@@ -284,13 +285,14 @@ def new_class(class_name):
                 return redirect(url_for('markbook'))
 
         else:
-            class_edit_dict = {'name': class_name}
+            class_edit_dict = {'class_name': class_name}
 
         return render_template('markbook_edit_class.html',
                         pages=page_link_dict,
                         current_page="Markbook",
                         class_edit_dict=class_edit_dict,
-                        session=session)
+                        session=session,
+                        song=random.choices(songs)[0])
     else:
         return not_logged_in("Log in to create a markbook. Don't have an account? Sign up!")
 

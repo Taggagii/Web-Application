@@ -2,6 +2,14 @@ import sqlite3 as sql
 from datetime import date
 
 
+def is_int(grade):
+    try:
+        int(grade)
+        return True
+    except:
+        return False
+
+
 class Markbook:
     def connect(self):
         self.connection = sql.connect(self.db)
@@ -50,19 +58,7 @@ class Markbook:
 
     def add_class(self, name, user, code, grade, start, end):
         self.connect()
-
-        if isinstance(grade, int):
-            if not (12 < grade or grade < 9):
-                return self.error_dict[4]
-        else:
-            return self.error_dict[4]
-        grade = int(grade)
-        if len(code) != 6:
-            return self.error_dict[4]
-        start = date(start)
-        end = date(end)
-
         self.cursor.execute('INSERT INTO classes (name, teacher, code, grade, start, end) VALUES (?, ?, ?, ?, ?, ?)',
-                       (name, user, code, grade, start, end))
+                       (name, user, code, int(grade), start, end))
         self.connection.commit()
         self.connection.close()

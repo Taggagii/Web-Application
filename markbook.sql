@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS classes;
         teacher TEXT NOT NULL,
         code TEXT(6),
         grade INTEGER,
-        start DATETIME,
-        end DATETIME
+        start DATE,
+        end DATE
     );
     CREATE TABLE students (
         id INTEGER PRIMARY KEY,

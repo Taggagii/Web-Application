@@ -4,11 +4,34 @@
 
 <div class="backingBox">
     <table>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Grade</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        {% for class in markbooks_dict['data'] %}
+        <tr>
+
+            <td>{{ class[1] }}</td>
+            <td>{{ class[3] }}</td>
+            <td>{{ class[4] }}</td>
+            <td>{{ class[5] }}</td>
+            <td>{{ class[6] }}</td>
+            <td>
+                <a>
+                <img src="/static/styles/cancel.svg" alt="delete weather reading" class="deleteButton">
+                    <!-- href="/markbook/delete/{{ class[0] }}" -->
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
 
     </table>
 
-    <form action="/markbook/new/" method="post">
-        <input type="text" id="class_name">
+    <form action="/markbook/" method="POST">
+        <input type="text" id="class_name" name="class_name" required>
         <input type="submit" value="New Class">
     </form>
 </div>
