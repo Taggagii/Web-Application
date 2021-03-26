@@ -49,9 +49,9 @@ def index():
 # that tells it what page to render, and the rest being variables that Jinja can access when redering the final page
     return render_template("home.html", pages=page_link_dict, current_page="Home",  song = random.choices(songs)[0], session=session)
 
-@app.route("/ip/")
+@app.route("/chat/")
 def finding_ip():
-    return render_template("ip.html", ip = request.remote_addr)
+    return render_template("chat.html", ip = request.remote_addr)
 
 @app.route('/about/')
 def about():
