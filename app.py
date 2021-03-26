@@ -51,6 +51,9 @@ def index():
     return render_template("home.html", pages=page_link_dict, current_page="Home",  song = random.choices(songs)[0], session=session)
 
 
+
+
+
 @app.route('/about/')
 def about():
     return render_template('about.html', pages=page_link_dict, current_page="About",  song = random.choices(songs)[0], session=session)
