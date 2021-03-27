@@ -66,6 +66,14 @@ class Login:
         self.connection.close()
         return True
 
+    def get_usernames(self):
+        self.connect()
+        self.cursor.execute("SELECT id, username FROM users")
+        values = self.cursor.fetchall()
+        self.connection.commit()
+        self.connection.close()
+        return values
+
 
 
 

@@ -142,6 +142,13 @@ ul {
   width: 80%;
 }
 
+.markbookTable > * > tr > * {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+
 /* DON'T CHANGE DEFAULTS IN CSS UNLESS YOU TELL ME AND MAKE SURE IT'S NOT MESSING SOMETHING ELSE UP
 table, th, td {
   border: 1px solid black;

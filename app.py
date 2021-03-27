@@ -1,21 +1,25 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import os, random, glob
+from datetime import timedelta
 from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
-from datetime import timedelta
+from packages.chat import Chat
+import threading, time
 # Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
+
 app = Flask(__name__)
 app.secret_key = "1234"
+app.config["SECRET_KEY"] = "1234"
 app.permanent_session_lifetime = timedelta(minutes=10)
-
 db_file = 'site.db'
 
 weather_obj = Weather(db_file)
 polls_obj = Polls(db_file)
 login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
+chat_obj = Chat(db_file)
 
 '''
 Everything the code does operates through an instance of the Flask class. We followed this format for our own packages,
@@ -30,7 +34,8 @@ page_link_dict = {
         "About": "/about/",
         "Weather": "/weather/",
         "Polls": "/polls/",
-        "Markbook": "/markbook/"
+        "Markbook": "/markbook/",
+        "Chat": "/chat/"
                   }
 
 my_path = os.getcwd().replace('\\', '/') + "/static/audio"
@@ -49,9 +54,6 @@ def index():
 # that tells it what page to render, and the rest being variables that Jinja can access when redering the final page
     return render_template("home.html", pages=page_link_dict, current_page="Home",  song = random.choices(songs)[0], session=session)
 
-@app.route("/chat/")
-def finding_ip():
-    return render_template("chat.html", ip = request.remote_addr)
 
 @app.route('/about/')
 def about():
@@ -244,7 +246,7 @@ def vote_poll(id):
         else:
             return redirect("/polls/")
 
-        
+
 @app.route("/polls/<int:id>/")
 def show_poll(id):
     return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
@@ -331,6 +333,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    # app.run(debug=True)
+    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 
