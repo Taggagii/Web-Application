@@ -142,6 +142,7 @@ ul {
   width: 80%;
 }
 
+/* DON'T CHANGE DEFAULTS IN CSS UNLESS YOU TELL ME AND MAKE SURE IT'S NOT MESSING SOMETHING ELSE UP
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -149,4 +150,5 @@ table, th, td {
 
 th, td {
 padding: 10px;
+*/
 }
