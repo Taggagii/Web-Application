@@ -5,13 +5,11 @@ from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
 from packages.markbook import Markbook
-from packages.chat import Chat
 import threading, time
 # Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
 
 app = Flask(__name__)
 app.secret_key = "1234"
-app.config["SECRET_KEY"] = "1234"
 app.permanent_session_lifetime = timedelta(minutes=10)
 db_file = 'site.db'
 
@@ -19,7 +17,6 @@ weather_obj = Weather(db_file)
 polls_obj = Polls(db_file)
 login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
-chat_obj = Chat(db_file)
 
 '''
 Everything the code does operates through an instance of the Flask class. We followed this format for our own packages,
@@ -35,7 +32,6 @@ page_link_dict = {
         "Weather": "/weather/",
         "Polls": "/polls/",
         "Markbook": "/markbook/",
-        "Chat": "/chat/"
                   }
 
 my_path = os.getcwd().replace('\\', '/') + "/static/audio"
