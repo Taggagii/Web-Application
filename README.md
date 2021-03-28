@@ -4,17 +4,23 @@
         <image src = "https://github.com/Taggagii/Web-Application/blob/master/static/readme/earth.png">
 </a>
 
-### Overview
+### Introduction
 This is the GitHub repository containing all the code for [our website](http://38.29.38.139:25565) 
 
+### Overview
+This is our first attempt at creating a web application using Flask. 
 
+Our website has features like:
+* A weather page which takes in a location and returns a temperature (and a weather related warning **if one exists**)
+* A polls page that let's anyone make and vote on polls
+* A markbook clone that allows teachers to store class data which is private to their account
+* Login support to let you personalize the prevoiusly mentioned pages so only you can see them
 
-This is a first test of a web application using Flask.
-We've currently got a weather app and poll app essentially complete.
+When we decided to make this website we wanted to do so from the ground up; we made the decision to host our website ourselves. We hit a roadblock, neither I nor [Joe](https://github.com/joe-joe-joe-joe) had a static IP address but, luckily, our friend [Jacob Albanese](https://github.com/jalbanese1441) did, and he even had a server he was willing to let us use. When interfacing with the server we started out using [Google's remote desktop software](https://remotedesktop.google.com/) but quickly I realized it was impractical when all we were doing was logging in to clone some code and run it. Logically, I thought it was a better idea to make a discord bot to do this for us, you can find that [here](https://github.com/taggagii/transfer).
 
-We have attempted to implement login but due to lack of testing time on the server we do not know if this function is fully functional yet. 
+After we had our server issue solved we moved on to make the bulk of our website. Jumping over hurdles such as [Git](https://git-scm.com/), human interaction, and [flask sessions](https://pythonbasics.org/flask-sessions/) we quickly started making progress and the website came to life.
 
-We are attempting to use sessions to allow multiple users to access and use the site separately at the same time
+In the end I think we have come out of this project with a much greater appriciation for the web developers who have made the amazing sites we use everyday (like GitHub). 
 
 
 
