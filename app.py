@@ -25,6 +25,13 @@ functions live in the same app file. app.py just talks to fucntions in other obj
 together with the HTML and CSS.
 '''
 
+
+
+
+
+
+
+
 # This stores the page names and links for our navigation bar.
 page_link_dict = {
         "Home": "/home/",
@@ -91,7 +98,7 @@ def weather():
             return render_template("error.html",
                                pages=page_link_dict,
                                current_page="Error",
-                               e=error_dict,  song = random.choices(songs)[0], session=session)
+                               e=error_dict, song = random.choices(songs)[0], session=session)
         else:
             # redirect forwards a (GET) request through to another endpoint, rather than rendering its own page
             return redirect('/weather/')
@@ -214,39 +221,66 @@ def profile():
 
 @app.route("/polls/createpoll/", methods=['GET', 'POST'])
 def create_poll():
+    '''
+    displays the create poll site which let's people enter values which are pulled into this function from the
+    webpage-displayed radio table, the table is javascript controlled and enabled so this function does not perform any
+    dynamic resizing
+    :return: if they have entered something the page will move them to the voting section of the page otherwise they will
+    be sent back to the craetepoll page until they have entered something
+    '''
     if request.method == "POST":
-        poll_question = request.form['pollQuestion']
-        poll_choices = request.form.getlist('pollChoices')[:-1]
-        polls_obj.add_poll(poll_question, poll_choices)
-        id = max(polls_obj.polls.keys())
-        return redirect("/polls/vote/" + str(id) + "/")
+        poll_question = request.form['pollQuestion'] #grabs the question
+        poll_choices = list(set(request.form.getlist('pollChoices')[:-1])) # and the set of questions
+        print(poll_choices)
+        if not poll_question and not poll_choices or poll_choices == [""]:
+            return render_template("createpoll.html") #displays the createpoll page
+        polls_obj.add_poll(poll_question, poll_choices) # adds them to the table of poll questions
+        id = max(polls_obj.polls.keys()) #set's their endpoint id the same as their talbe id
+        return redirect("/polls/vote/" + str(id) + "/") #and moves them to the voting page
     else:
-        return render_template("createpoll.html")
+        return render_template("createpoll.html", song = random.choices(songs)[0]) #displays the createpoll page
 
 
 @app.route("/polls/")
 def polls():
+    '''
+    displays the homepage for the polls section of the website, has connections to vote on polls and create polls
+    :return: the home poll page
+    '''
     return render_template('polls.html', pages=page_link_dict, current_page='Polls',  song = random.choices(songs)[0], session=session)
 
 
 @app.route("/polls/vote/<int:id>/", methods = ['GET', 'POST'])
 def vote_poll(id):
-    if request.method == "POST":
-        if "choices" in request.form:
-            choice = request.form["choices"]
-            polls_obj.vote(id, choice)
-        return redirect("/polls/" + str(id) + "/")
+    '''
+    activated when endpoint /polls/vot/<int:id>/ is entered
+    send's someone to the voting page at a specific id
+    :param id: unique id value to search for in table
+    :return: if the id exists brings you to the polls page you've requested, otherwise returns you to the home polls page
+    '''
+    if request.method == "POST": # when someone clicks the vote button
+        if "choices" in request.form: #if they've made choices
+            choice = request.form["choices"] #then get the choicces
+            polls_obj.vote(id, choice) #and modify the databse
+        return redirect("/polls/" + str(id) + "/") #then send them to the show polls page
     else:
-        if id in polls_obj.polls.keys():
+        if id in polls_obj.polls.keys(): #if they're id exists then let them vote
             return render_template("vote_poll.html", pages = page_link_dict, current_page='Polls', polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
-        else:
+        else: #otherwise send them back to the polls home page
             return redirect("/polls/")
 
 
 @app.route("/polls/<int:id>/")
 def show_poll(id):
-    return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
-
+    '''
+    show's a poll at specified id if it exists
+    :param id: unique id value to search for in table
+    :return: if the id exists brings you to the polls page you've requested, otherwise returns you to the home polls page
+    '''
+    if id in polls_obj.polls.keys(): #if the poll exists show it
+        return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
+    else: #otherwise send the back to the polls home page
+        return redirect("/polls/")
 
 @app.route('/markbook/', methods=['GET', 'POST'])
 def markbook():
@@ -310,7 +344,7 @@ def not_logged_in(error):
     error_dict = {'source': '/login/',
                   'error': error,
                   'redirect_msg': "Login or Sign Up"}
-    return render_template('error.html', pages=page_link_dict, current_page='Error', e=error_dict)
+    return render_template('error.html', pages=page_link_dict, song = random.choices(songs)[0], current_page='Error', e=error_dict)
 
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
@@ -329,6 +363,6 @@ def dated_url_for(endpoint, **values):
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
-    #app.run(debug=True)
+    #app.run(host='192.168.1.222', debug=False, port=25565, threaded=True)
+    app.run(debug=True)
 
