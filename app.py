@@ -49,18 +49,10 @@ run. A client will specify where on the site they want to go, and if that endpoi
 function will tell Flask what information to render back to the client. 
 '''
 
-def remove_repeats(values, exceptions = []):
-    newList = []
-    [newList.append(value) for value in values if value not in newList or value in exceptions]
-    return newList
-
 def log_user_entrance(user):
-    #fixing repeats
-    values = open("User-Logs.txt", "r").readlines()
-    values = remove_repeats(values, ["-----WebSite Restart---"])
-    values.append(f"User: {user}\tTime: {datetime.now()}\n")
-    with open("User Logs.txt", "w") as file:
-        file.write("\n".join(values))
+    with open("User-Logs.txt", "a+") as file:
+        file.write(f"User: {user}\tTime: {datetime.now()}\n")
+
 
 @app.route("/")
 @app.route("/home/")
