@@ -18,6 +18,11 @@ polls_obj = Polls(db_file)
 login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
 
+#show that the website closed and repoened
+with open("User Logs.txt", "a+") as file:
+    file.write("\n-----WebSite Restart---\n")
+
+
 '''
 Everything the code does operates through an instance of the Flask class. We followed this format for our own packages,
 which perfrom all their operations on their respective objects and are linked to the database file, rather than having all
