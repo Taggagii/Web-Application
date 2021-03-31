@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import os, random, glob
-from datetime import timedelta
+from datetime import timedelta, datetime
 from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
@@ -50,21 +50,29 @@ server code. "Endpoints" (app.route) are the paths that tell the server what the
 run. A client will specify where on the site they want to go, and if that endpoint is assigned to a function, that
 function will tell Flask what information to render back to the client. 
 '''
+def log_user_entrance(user):
+    with open("User Logs.txt", "a+") as file:
+        file.write(f"User: {user}\tTime: {datetime.now()}\n")
+
+
 @app.route("/")
 @app.route("/home/")
 def index():
 # Flask's render_template function takes in 1+ arguments, the first being an HTML file in a directory named 'templates'
 # that tells it what page to render, and the rest being variables that Jinja can access when redering the final page
+    log_user_entrance(request.remote_addr)
     return render_template("home.html", pages=page_link_dict, current_page="Home",  song = random.choices(songs)[0], session=session)
 
 
 @app.route('/about/')
 def about():
+    log_user_entrance(request.remote_addr)
     return render_template('about.html', pages=page_link_dict, current_page="About",  song = random.choices(songs)[0], session=session)
 
 
 @app.route("/pseudocode/")
 def pseudocode():
+    log_user_entrance(request.remote_addr)
     return render_template('pseudocode.html', pages=page_link_dict, current_page="Pseudocode",  song = random.choices(songs)[0], session=session)
 
 
@@ -73,6 +81,7 @@ def weather():
 # Much like with databases and SQL, HHTP methods distinguish different types of requests to a page. The standard request
 # is a GET request, which is used to just display a page and its information. When we want to send data back to the
 # server, we use a post request
+    log_user_entrance(request.remote_addr)
     if request.method == 'POST':
         error = None
 
@@ -125,12 +134,14 @@ request. Each entry's deletion link therefore deletes itself in the database.'''
 
 @app.route("/weather/delete/<int:reading_id>", methods=['GET', 'POST'])
 def delete_weather(reading_id):
+    log_user_entrance(request.remote_addr)
     weather_obj.delete_weather(reading_id)
     return redirect('/weather/')
 
 # Gets user input from the sending form and attempts to log the user in
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
+    log_user_entrance(request.remote_addr)
     login_data = {}
     if request.method == 'POST':
         username = request.form['username']
@@ -149,6 +160,7 @@ def login():
 # Takes data from the sending form and attempts to add a new user account. If successful, also logs the user in
 @app.route('/signup/', methods=['GET', 'POST'])
 def signup():
+    log_user_entrance(request.remote_addr)
     signup_data = {}
     if request.method == 'POST':
         username = request.form['username']
@@ -170,6 +182,7 @@ def signup():
 # Deletes the current user from the session object, logging them out of the site
 @app.route('/logout/')
 def logout():
+    log_user_entrance(request.remote_addr)
     if 'user' in session:
         del session['user']
         return redirect(url_for('login'))
@@ -180,6 +193,7 @@ def logout():
 # Verifies the current username and password, then updates the password in the database with the new one
 @app.route('/change/', methods=['GET', 'POST'])
 def change_password():
+    log_user_entrance(request.remote_addr)
     if request.method == 'POST' and 'user' in session:
         user_data = {'username': session['user']}
         username = request.form['username']
@@ -208,6 +222,7 @@ def change_password():
 
 @app.route('/profile/')
 def profile():
+    log_user_entrance(request.remote_addr)
     if session['user']:
         user_data = {'username': session['user']}
         return render_template('profile.html',
@@ -228,6 +243,7 @@ def create_poll():
     :return: if they have entered something the page will move them to the voting section of the page otherwise they will
     be sent back to the craetepoll page until they have entered something
     '''
+    log_user_entrance(request.remote_addr)
     if request.method == "POST":
         poll_question = request.form['pollQuestion'] #grabs the question
         poll_choices = list(set(request.form.getlist('pollChoices')[:-1])) # and the set of questions
@@ -247,6 +263,7 @@ def polls():
     displays the homepage for the polls section of the website, has connections to vote on polls and create polls
     :return: the home poll page
     '''
+    log_user_entrance(request.remote_addr)
     return render_template('polls.html', pages=page_link_dict, current_page='Polls',  song = random.choices(songs)[0], session=session)
 
 
@@ -258,6 +275,7 @@ def vote_poll(id):
     :param id: unique id value to search for in table
     :return: if the id exists brings you to the polls page you've requested, otherwise returns you to the home polls page
     '''
+    log_user_entrance(request.remote_addr)
     if request.method == "POST": # when someone clicks the vote button
         if "choices" in request.form: #if they've made choices
             choice = request.form["choices"] #then get the choicces
@@ -277,6 +295,7 @@ def show_poll(id):
     :param id: unique id value to search for in table
     :return: if the id exists brings you to the polls page you've requested, otherwise returns you to the home polls page
     '''
+    log_user_entrance(request.remote_addr)
     if id in polls_obj.polls.keys(): #if the poll exists show it
         return render_template("show_poll.html", pages=page_link_dict, current_page="Polls", polls_dict=polls_obj.get_poll(id), song = random.choices(songs)[0], session=session)
     else: #otherwise send the back to the polls home page
@@ -284,8 +303,8 @@ def show_poll(id):
 
 @app.route('/markbook/', methods=['GET', 'POST'])
 def markbook():
+    log_user_entrance(request.remote_addr)
     if 'user' in session:
-
         if request.method == 'POST':
             class_name = request.form['class_name']
             return redirect(url_for('new_class', class_name=class_name))
@@ -305,6 +324,7 @@ def markbook():
 
 @app.route('/markbook/create/<string:class_name>', methods=['GET', 'POST'])
 def new_class(class_name):
+    log_user_entrance(request.remote_addr)
     if 'user' in session:
         if request.method == 'POST':
             class_name = request.form['class_name']
@@ -341,6 +361,7 @@ def new_class(class_name):
 
 
 def not_logged_in(error):
+    log_user_entrance(request.remote_addr)
     error_dict = {'source': '/login/',
                   'error': error,
                   'redirect_msg': "Login or Sign Up"}
