@@ -19,7 +19,7 @@ login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
 
 #show that the website closed and repoened
-with open("User Logs.txt", "a+") as file:
+with open("User-Logs.txt", "a+") as file:
     file.write("\n-----WebSite Restart---\n")
 
 
@@ -56,7 +56,7 @@ run. A client will specify where on the site they want to go, and if that endpoi
 function will tell Flask what information to render back to the client. 
 '''
 def log_user_entrance(user):
-    with open("User Logs.txt", "a+") as file:
+    with open("User-Logs.txt", "a+") as file:
         file.write(f"User: {user}\tTime: {datetime.now()}\n")
 
 
