@@ -19,7 +19,7 @@ login_obj = Login(db_file)
 markbook_obj = Markbook(db_file)
 
 #show that the website closed and repoened
-with open("User Logs.txt", "a+") as file:
+with open("User-Logs.txt", "a+") as file:
     file.write("\n-----WebSite Restart---\n")
 
 
