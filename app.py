@@ -30,13 +30,6 @@ functions live in the same app file. app.py just talks to fucntions in other obj
 together with the HTML and CSS.
 '''
 
-
-
-
-
-
-
-
 # This stores the page names and links for our navigation bar.
 page_link_dict = {
         "Home": "/home/",
@@ -55,10 +48,19 @@ server code. "Endpoints" (app.route) are the paths that tell the server what the
 run. A client will specify where on the site they want to go, and if that endpoint is assigned to a function, that
 function will tell Flask what information to render back to the client. 
 '''
-def log_user_entrance(user):
-    with open("User Logs.txt", "a+") as file:
-        file.write(f"User: {user}\tTime: {datetime.now()}\n")
 
+def remove_repeats(values, exceptions = []):
+    newList = []
+    [newList.append(value) for value in values if value not in newList or value in exceptions]
+    return newList
+
+def log_user_entrance(user):
+    #fixing repeats
+    values = open("User-Logs.txt", "r").readlines()
+    values = remove_repeats(values, ["-----WebSite Restart---"])
+    values.append(f"User: {user}\tTime: {datetime.now()}\n")
+    with open("User Logs.txt", "w") as file:
+        file.write("\n".join(values))
 
 @app.route("/")
 @app.route("/home/")
