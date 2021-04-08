@@ -299,64 +299,6 @@ def show_poll(id):
     else: #otherwise send the back to the polls home page
         return redirect("/polls/")
 
-@app.route('/markbook/', methods=['GET', 'POST'])
-def markbook():
-    log_user_entrance(request.remote_addr)
-    if 'user' in session:
-        if request.method == 'POST':
-            class_name = request.form['class_name']
-            return redirect(url_for('new_class', class_name=class_name))
-
-        elif request.method == 'GET':
-            markbooks_dict = {'data': markbook_obj.get_user_classes(session['user'])}
-            return render_template('markbook_home.html',
-                                   pages=page_link_dict,
-                                   current_page="Markbook",
-                                   session=session,
-                                   markbooks_dict=markbooks_dict,
-                                   song=random.choices(songs)[0])
-
-    else:
-        return not_logged_in("Log in to access your markbooks. Don't have an account? Sign up!")
-
-
-@app.route('/markbook/create/<string:class_name>', methods=['GET', 'POST'])
-def new_class(class_name):
-    log_user_entrance(request.remote_addr)
-    if 'user' in session:
-        if request.method == 'POST':
-            class_name = request.form['class_name']
-            code = request.form['code']
-            grade = request.form['grade']
-            start = request.form['start']
-            end = request.form['end']
-
-            error = markbook_obj.add_class(class_name, session['user'], code, grade, start, end)
-            if error:
-                class_edit_dict = {'error': error}
-            else:
-                return redirect(url_for('markbook'))
-
-        else:
-            class_edit_dict = {'class_name': class_name}
-
-        return render_template('markbook_edit_class.html',
-                        pages=page_link_dict,
-                        current_page="Markbook",
-                        class_edit_dict=class_edit_dict,
-                        session=session,
-                        song=random.choices(songs)[0])
-    else:
-        return not_logged_in("Log in to create a markbook. Don't have an account? Sign up!")
-
-
-def not_logged_in(error):
-    log_user_entrance(request.remote_addr)
-    error_dict = {'source': '/login/',
-                  'error': error,
-                  'redirect_msg': "Login or Sign Up"}
-    return render_template('error.html', pages=page_link_dict, song = random.choices(songs)[0], current_page='Error', e=error_dict)
-
 
 #Borrowed from https://gist.github.com/itsnauman/b3d386e4cecf97d59c94
 @app.context_processor
