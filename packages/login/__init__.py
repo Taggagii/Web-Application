@@ -26,7 +26,7 @@ class Login:
     # against the stored hash, and if successful the user is logged in.
     def log_in(self, username, password):
         self.connect()
-        self.cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
+        self.cursor.execute("SELECT * FROM users WHERE username=?", (username,))
         user_req = self.cursor.fetchall()
         self.connection.close()
 
@@ -37,7 +37,7 @@ class Login:
     # Checks if a username has been taken, and if not, adds the username and password (hash) to the database
     def sign_up(self, username, password):
         self.connect()
-        self.cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
+        self.cursor.execute("SELECT * FROM users WHERE username=?", (username,))
         user_req = self.cursor.fetchall()
 
         if user_req:
@@ -52,7 +52,7 @@ class Login:
             the same) hash. This can be used to verify that the password a user logs in with is the correct one, without
             ever saving the password itself.'''
             pass_hash = pbkdf2_sha256.hash(password)
-            self.cursor.execute(f"INSERT INTO users (username, pass_hash) VALUES ('{username}', '{pass_hash}')")
+            self.cursor.execute("INSERT INTO users (username, pass_hash) VALUES (?, ?)", (username, pass_hash))
             self.connection.commit()
             self.connection.close()
             return True
@@ -61,7 +61,7 @@ class Login:
     def change_password(self, username, new_password):
         self.connect()
         new_pass_hash = pbkdf2_sha256.hash(new_password)
-        self.cursor.execute(f"UPDATE users SET pass_hash='{new_pass_hash}' WHERE username='{username}'")
+        self.cursor.execute("UPDATE users SET pass_hash=? WHERE username=?", (new_pass_hash, username))
         self.connection.commit()
         self.connection.close()
         return True
