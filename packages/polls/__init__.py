@@ -19,7 +19,7 @@ class Polls:
         self.make_table()
         self.polls = {}
         self.download_table()
-        self.clear_table()
+        #self.clear_table() # was used during development
         self.connection = None
         self.cursor = None
         self.length = len(self.polls)

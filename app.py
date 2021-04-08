@@ -351,14 +351,6 @@ def new_class(class_name):
         return not_logged_in("Log in to create a markbook. Don't have an account? Sign up!")
 
 
-    '''markbooks_dict = {'error': error}
-    return render_template('markbook_home.html',
-                           pages=page_link_dict,
-                           current_page='Markbook',
-                           session=session,
-                           markbooks_dict=markbooks_dict)'''
-
-
 def not_logged_in(error):
     log_user_entrance(request.remote_addr)
     error_dict = {'source': '/login/',
