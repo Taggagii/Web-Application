@@ -13,7 +13,6 @@ This is our first attempt at creating a web application using Flask.
 Our website has features like:
 * A weather page which takes in a location and returns a temperature (and a weather related warning **if one exists**)
 * A polls page that let's anyone make and vote on polls
-* A markbook clone that allows teachers to store class data which is private to their account
 * Login support to let you personalize the prevoiusly mentioned pages so only you can see them
 
 When we decided to make this website we wanted to do so from the ground up; we decided to host our website ourselves. We hit a roadblock, neither I nor [Joe](https://github.com/joe-joe-joe-joe) had a static IP address but, luckily, our friend [Jacob Albanese](https://github.com/jalbanese1441) did, and he even had a server he was willing to let us use. When interfacing with the server we started out using [Google's remote desktop software](https://remotedesktop.google.com/) but quickly I realized it was impractical when all we were doing was logging in to clone some code and run it. Logically, I thought it was a better idea to make a discord bot to do this for us, you can find that [here](https://github.com/taggagii/transfer).
