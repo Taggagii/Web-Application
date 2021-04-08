@@ -36,7 +36,6 @@ page_link_dict = {
         "About": "/about/",
         "Weather": "/weather/",
         "Polls": "/polls/",
-        "Markbook": "/markbook/",
                   }
 
 my_path = os.getcwd().replace('\\', '/') + "/static/audio"
