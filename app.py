@@ -4,7 +4,7 @@ from datetime import timedelta, datetime
 from packages.weather import Weather
 from packages.polls import Polls
 from packages.login import Login
-from packages.markbook import Markbook
+
 import threading, time
 # Pull all necessary packages from the pipenv. Packages in the "packages" directory were written by us and exist locally
 
@@ -16,7 +16,6 @@ db_file = 'site.db'
 weather_obj = Weather(db_file)
 polls_obj = Polls(db_file)
 login_obj = Login(db_file)
-markbook_obj = Markbook(db_file)
 
 #show that the website closed and repoened
 with open("User-Logs.txt", "a+") as file:
