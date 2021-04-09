@@ -61,7 +61,8 @@ class Login:
     def change_password(self, username, new_password):
         self.connect()
         new_pass_hash = pbkdf2_sha256.hash(new_password)
-        self.cursor.execute("UPDATE users SET pass_hash=? WHERE username=?", (new_pass_hash, username))
+        self.cursor.execute("UPDATE users SET pass_hash=? WHERE username=?",
+                            (new_pass_hash, username))
         self.connection.commit()
         self.connection.close()
         return True

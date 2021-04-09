@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS weather;
-    CREATE TABLE weather (
+    CREATE TABLE IF NOT EXISTS weather (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     city TEXT NOT NULL,
     country TEXT NOT NULL,
